@@ -22,11 +22,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             RecipeQuestTheme {
-                Scaffold {
-                    RecipeQuestNavGraph(
-                        modifier = Modifier.padding(it)
-                    )
-                }
+                RecipeQuestNavGraph()
             }
         }
     }

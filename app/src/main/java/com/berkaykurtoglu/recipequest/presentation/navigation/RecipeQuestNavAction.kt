@@ -11,7 +11,12 @@ class RecipeQuestNavAction(
     }
 
     fun navigateToHome(){
-        navController.navigate(Screens.HomeScreen.route)
+        navController.navigate(Screens.HomeScreen.route){
+            popUpTo(Screens.SplashScreen.route) {
+                inclusive = true
+                saveState = true
+            }
+        }
     }
 
 
