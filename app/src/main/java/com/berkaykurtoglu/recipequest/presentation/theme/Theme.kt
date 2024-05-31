@@ -1,4 +1,4 @@
-package com.berkaykurtoglu.recipequest.ui.theme
+package com.berkaykurtoglu.recipequest.presentation.theme
 
 import android.app.Activity
 import android.os.Build

@@ -1,4 +1,4 @@
-package com.berkaykurtoglu.recipequest
+package com.berkaykurtoglu.recipequest.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.berkaykurtoglu.recipequest.ui.theme.RecipeQuestTheme
+import com.berkaykurtoglu.recipequest.presentation.theme.RecipeQuestTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

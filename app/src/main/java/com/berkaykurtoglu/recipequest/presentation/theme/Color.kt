@@ -1,4 +1,4 @@
-package com.berkaykurtoglu.recipequest.ui.theme
+package com.berkaykurtoglu.recipequest.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
