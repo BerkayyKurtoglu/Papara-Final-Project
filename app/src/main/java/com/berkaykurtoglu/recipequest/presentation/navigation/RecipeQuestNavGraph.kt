@@ -38,8 +38,8 @@ fun RecipeQuestNavGraph(
         composable(
             route = Screens.SplashScreen.route
         ){
-            SplashScreen() {
-                navAction.navigateToHome()
+            SplashScreen() {isNetworkAvailable->
+                navAction.navigateToHome(isNetworkAvailable)
             }
         }
 
