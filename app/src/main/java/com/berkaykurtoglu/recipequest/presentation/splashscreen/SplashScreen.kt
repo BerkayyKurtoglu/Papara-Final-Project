@@ -1,5 +1,6 @@
 package com.berkaykurtoglu.recipequest.presentation.splashscreen
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,18 +27,21 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.berkaykurtoglu.recipequest.R
 import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
     modifier: Modifier = Modifier,
-    onNavigateToHome: () -> Unit
+    viewModel: SplashScreenViewModel = hiltViewModel(),
+    onNavigateToHome: (isNetworkAvailable: Boolean) -> Unit
 ) {
 
+    val state = viewModel.screenState.collectAsState()
+
     LaunchedEffect(key1 = Unit) {
-        delay(2000)
-        onNavigateToHome()
+        viewModel.checkNetworkAvailability()
     }
 
     Box(
@@ -61,28 +66,31 @@ fun SplashScreen(
                 modifier = Modifier.align(Alignment.Center)
             )
 
-            Column(
-                modifier = Modifier
-                    .padding(bottom = 20.dp)
-                    .align(Alignment.BottomCenter),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "Network is testing",
-                    color = Color.White,
-                    fontSize = 16.sp,
-                )
-                CircularProgressIndicator(
-                    color = Color.White,
+            if (state.value.isLoading){
+                Column(
                     modifier = Modifier
-                        .size(20.dp),
-                    strokeWidth = 3.dp
-                )
+                        .padding(bottom = 20.dp)
+                        .align(Alignment.BottomCenter),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Looking For A Network ;)",
+                        color = Color.White,
+                        fontSize = 16.sp,
+                    )
+                    CircularProgressIndicator(
+                        color = Color.White,
+                        modifier = Modifier
+                            .size(20.dp),
+                        strokeWidth = 2.dp
+                    )
+                }
+            }else{
+                onNavigateToHome(state.value.connectionPassed)
             }
 
         }
-
 
     }
 
