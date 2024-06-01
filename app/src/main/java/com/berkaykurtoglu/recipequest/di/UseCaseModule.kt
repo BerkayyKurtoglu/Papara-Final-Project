@@ -2,6 +2,7 @@ package com.berkaykurtoglu.recipequest.di
 
 import com.berkaykurtoglu.recipequest.domain.repository.SplashScreenRepository
 import com.berkaykurtoglu.recipequest.domain.usecase.CheckNetworkUseCase
+import com.berkaykurtoglu.recipequest.domain.usecase.UseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,5 +19,15 @@ object UseCaseModule {
     fun provideNetworkUseCase(
         splashScreenRepository: SplashScreenRepository
     ) = CheckNetworkUseCase(splashScreenRepository)
+
+
+    @Singleton
+    @Provides
+    fun provideUseCase(
+        checkNetworkUseCase: CheckNetworkUseCase
+    ) = UseCase(
+        checkNetworkUseCase = checkNetworkUseCase
+    )
+
 
 }
