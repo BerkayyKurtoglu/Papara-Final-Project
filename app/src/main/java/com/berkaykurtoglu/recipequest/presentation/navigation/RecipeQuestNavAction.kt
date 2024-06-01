@@ -11,7 +11,7 @@ class RecipeQuestNavAction(
     }
 
     fun navigateToHome(isNetworkAvailable : Boolean){
-        navController.navigate(Screens.HomeScreen.route){
+        navController.navigate(Screens.HomeScreen.route+"$isNetworkAvailable"){
             popUpTo(Screens.SplashScreen.route) {
                 inclusive = true
                 saveState = true
