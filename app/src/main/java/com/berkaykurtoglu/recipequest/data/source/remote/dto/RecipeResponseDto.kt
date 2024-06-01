@@ -3,7 +3,7 @@ package com.berkaykurtoglu.recipequest.data.source.remote.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class RecipesDto(
+data class RecipeResponseDto(
     @SerializedName("number")
     val number: Int,
     @SerializedName("offset")
