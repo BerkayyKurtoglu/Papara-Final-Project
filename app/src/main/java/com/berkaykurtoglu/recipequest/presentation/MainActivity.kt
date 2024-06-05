@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -38,8 +39,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             val state = splashScreenViewModel.screenState.collectAsState()
             RecipeQuestTheme {
-                if (!state.value.isLoading){
-                    RecipeQuestNavGraph(isNetworkAvailable = state.value.connectionPassed)
+                Surface {
+                    if (!state.value.isLoading){
+                        RecipeQuestNavGraph(isNetworkAvailable = state.value.connectionPassed)
+                    }
                 }
             }
         }

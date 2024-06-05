@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.berkaykurtoglu.recipequest.domain.usecase.UseCase
 import com.berkaykurtoglu.recipequest.util.ApiResult
+import com.berkaykurtoglu.recipequest.util.FilterCategorie
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,7 +19,23 @@ class HomeScreenViewModel @Inject constructor(
     private val _screenState = MutableStateFlow(HomeScreenState())
     val screenState = _screenState.asStateFlow()
 
-    fun getRecipes() {
+
+    fun onEvent(
+        event : HomeScreenEvent
+    ){
+        when(event){
+            is HomeScreenEvent.OnFirstCall ->{
+                if (event.isConnected) getRecipesFromNetwork()
+                else getRecipesFromDatabase()
+            }
+        }
+    }
+
+    fun updateChipIndex(filterCategorie: FilterCategorie){
+        _screenState.value = _screenState.value.copy(chipIndex = filterCategorie)
+    }
+
+    private fun getRecipesFromNetwork() {
         viewModelScope.launch {
             useCase.getAllRecipesRandomlyUseCase().collect{apiResult ->
                    when(apiResult) {
@@ -27,13 +44,25 @@ class HomeScreenViewModel @Inject constructor(
                            println("loading")
                        }
                        is ApiResult.Error ->{
-                           println("error")
+                           println(apiResult.message)
                        }
                        is ApiResult.Success ->{
-
+                            apiResult.data.results.forEach {
+                                println(it.title)
+                            }
                        }
 
                    }
+            }
+        }
+    }
+
+    private fun getRecipesFromDatabase(){
+        viewModelScope.launch {
+            useCase.getAllRecipesFromLocalUseCase().collect{
+                it.forEach {
+                    println(it.title)
+                }
             }
         }
     }
