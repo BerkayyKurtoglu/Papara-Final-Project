@@ -7,6 +7,6 @@ enum class ScreenArguments(
     val type : NavType<*>
 ){
 
-    HOME_SCREEN_ARGUMENT("isNetworkAvailable", NavType.BoolType)
+
 
 }

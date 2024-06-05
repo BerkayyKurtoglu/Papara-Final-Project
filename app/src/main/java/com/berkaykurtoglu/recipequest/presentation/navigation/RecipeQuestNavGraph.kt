@@ -1,6 +1,7 @@
 package com.berkaykurtoglu.recipequest.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -13,15 +14,15 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.berkaykurtoglu.recipequest.presentation.detaiscreen.RecipeDetailScreen
 import com.berkaykurtoglu.recipequest.presentation.homescreen.HomeScreen
-import com.berkaykurtoglu.recipequest.presentation.splashscreen.SplashScreen
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun RecipeQuestNavGraph(
     modifier: Modifier = Modifier,
+    isNetworkAvailable: Boolean,
     navController: NavHostController = rememberNavController(),
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    startDestination: String = Screens.SplashScreen.route,
+    startDestination: String = Screens.HomeScreen.route,
     navAction: RecipeQuestNavAction = remember(navController) {
         RecipeQuestNavAction(navController)
     }
@@ -37,22 +38,8 @@ fun RecipeQuestNavGraph(
     ){
 
         composable(
-            route = Screens.SplashScreen.route
+            route = Screens.HomeScreen.route,
         ){
-            SplashScreen() {isNetworkAvailable->
-                navAction.navigateToHome(isNetworkAvailable)
-            }
-        }
-
-        composable(
-            route = Screens.HomeScreen.route+"{${ScreenArguments.HOME_SCREEN_ARGUMENT.argument}}",
-            arguments = listOf(
-                navArgument(ScreenArguments.HOME_SCREEN_ARGUMENT.argument){
-                    type = ScreenArguments.HOME_SCREEN_ARGUMENT.type
-                }
-            )
-        ){
-            val isNetworkAvailable  = it.arguments?.getBoolean(ScreenArguments.HOME_SCREEN_ARGUMENT.argument)
             HomeScreen(
                 coroutineScope = coroutineScope,
                 isNetworkAvailable = isNetworkAvailable
@@ -68,7 +55,6 @@ fun RecipeQuestNavGraph(
                 coroutineScope = coroutineScope
             )
         }
-
 
 
     }
