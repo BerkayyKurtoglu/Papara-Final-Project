@@ -1,7 +1,9 @@
 package com.berkaykurtoglu.recipequest.di
 
+import com.berkaykurtoglu.recipequest.domain.repository.HomeRepository
 import com.berkaykurtoglu.recipequest.domain.repository.SplashScreenRepository
 import com.berkaykurtoglu.recipequest.domain.usecase.CheckNetworkUseCase
+import com.berkaykurtoglu.recipequest.domain.usecase.GetAllRecipesRandomlyUseCase
 import com.berkaykurtoglu.recipequest.domain.usecase.UseCase
 import dagger.Module
 import dagger.Provides
@@ -20,13 +22,20 @@ object UseCaseModule {
         splashScreenRepository: SplashScreenRepository
     ) = CheckNetworkUseCase(splashScreenRepository)
 
+    @Singleton
+    @Provides
+    fun provideGetAllRecipesUseCase(
+        homeRepository: HomeRepository
+    ) = GetAllRecipesRandomlyUseCase(homeRepository)
 
     @Singleton
     @Provides
     fun provideUseCase(
-        checkNetworkUseCase: CheckNetworkUseCase
+        checkNetworkUseCase: CheckNetworkUseCase,
+        getAllRecipesRandomlyUseCase: GetAllRecipesRandomlyUseCase
     ) = UseCase(
-        checkNetworkUseCase = checkNetworkUseCase
+        checkNetworkUseCase = checkNetworkUseCase,
+        getAllRecipesRandomlyUseCase = getAllRecipesRandomlyUseCase
     )
 
 
