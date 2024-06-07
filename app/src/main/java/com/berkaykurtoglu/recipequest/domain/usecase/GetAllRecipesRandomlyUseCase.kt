@@ -7,6 +7,6 @@ class GetAllRecipesRandomlyUseCase @Inject constructor(
     private val homeRepository: HomeRepository
 ) {
 
-    operator fun invoke() = homeRepository.getRecipesRandomly()
+    suspend operator fun invoke() = homeRepository.getAllRecipesFromNetwork()
 
 }

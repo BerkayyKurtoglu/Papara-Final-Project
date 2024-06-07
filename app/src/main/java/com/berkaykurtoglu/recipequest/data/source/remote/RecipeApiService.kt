@@ -12,9 +12,9 @@ interface RecipeApiService {
     suspend fun getRecipes(
         @Query("apiKey") apiKey: String = Contants.API_KEY,
         @Query("addRecipeInformation") addRecipeInformation: Boolean = true,
-        @Query("instructionsRequired") instructionsRequired: Boolean = true,
+        @Query("addRecipeNutrition") addRecipeNutrition: Boolean = true,
         @Query("offset") offset: Int = 0,
         @Query("number") number: Int = 50
-    ) : Response<RecipeResponseDto>
+    ) : RecipeResponseDto
 
 }
