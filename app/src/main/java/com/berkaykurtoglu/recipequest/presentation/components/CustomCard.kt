@@ -20,6 +20,7 @@ import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.rounded.FavoriteBorder
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,32 +30,44 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
+import coil.request.ImageRequest
+import coil.transform.RoundedCornersTransformation
 import com.berkaykurtoglu.recipequest.R
+import com.berkaykurtoglu.recipequest.domain.model.ResultModel
 
 @Composable
 fun CustomCard(
     modifier: Modifier = Modifier,
+    resultModel : ResultModel,
     shape: RoundedCornerShape = RoundedCornerShape(20.dp),
     onClickFavorite: () -> Unit,
+    onNavigateToDetail : () -> Unit
 ) {
 
     Box(
-        modifier = modifier
+        modifier = modifier.clickable {
+            onNavigateToDetail()
+        }.fillMaxSize().aspectRatio(13f/9f)
     ) {
 
-        Image(
-            painter = painterResource(id = R.drawable.main_background),
-            contentDescription = "",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .clip(shape)
-                .fillMaxSize()
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(resultModel.image)
+                .crossfade(true)
+                .build(),
+            contentDescription = "Recipe Image",
+            modifier = Modifier.fillMaxSize().clip(shape),
+            contentScale = ContentScale.Crop
         )
+
         Box(
             modifier= Modifier
                 .fillMaxSize()
@@ -71,7 +84,7 @@ fun CustomCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Marty Smith",
+                    text = resultModel.sourceName,
                     color = Color.White,
                     fontSize = 14.sp,
                     modifier = Modifier,
@@ -84,7 +97,7 @@ fun CustomCard(
                         .clip(shape)
                         .background(Color.White.copy(0.5f))
                         .clickable {
-                                   onClickFavorite()
+                            onClickFavorite()
                         },
                     contentAlignment = Alignment.Center
                 ){
@@ -106,7 +119,7 @@ fun CustomCard(
             ) {
 
                 Text(
-                    text = "Toast With Egg And Avocado Test Test Test",
+                    text = resultModel.title,
                     color = Color.White,
                     fontSize = 16.sp,
                     modifier = Modifier,
@@ -125,7 +138,7 @@ fun CustomCard(
                         modifier = Modifier.size(23.dp)
                     )
                     Text(
-                        text = "30 min",
+                        text = resultModel.readyInMinutes.toString() + " Min",
                         color = Color.White,
                         fontSize = 14.sp,
                         modifier = Modifier
