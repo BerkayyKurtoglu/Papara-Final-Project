@@ -3,6 +3,7 @@ package com.berkaykurtoglu.recipequest.di
 import android.net.ConnectivityManager
 import com.berkaykurtoglu.recipequest.data.repository.HomeRepositoryImpl
 import com.berkaykurtoglu.recipequest.data.repository.SplashScreenRepositoryImpl
+import com.berkaykurtoglu.recipequest.data.source.local.RecipeDao
 import com.berkaykurtoglu.recipequest.data.source.remote.RecipeApiService
 import com.berkaykurtoglu.recipequest.data.source.remote.RemoteDataSourceImpl
 import com.berkaykurtoglu.recipequest.domain.datasource.RemoteDataSource
@@ -27,8 +28,9 @@ object RepositoryModule{
     @Singleton
     @Provides
     fun provideHomeRepository(
-        remoteDataSource: RemoteDataSource
-    ) : HomeRepository = HomeRepositoryImpl(remoteDataSource)
+        remoteDataSource: RemoteDataSource,
+        localDataSource: RecipeDao
+    ) : HomeRepository = HomeRepositoryImpl(remoteDataSource,localDataSource)
 
     @Singleton
     @Provides
