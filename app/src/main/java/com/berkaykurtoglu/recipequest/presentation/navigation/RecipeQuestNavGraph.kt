@@ -1,7 +1,6 @@
 package com.berkaykurtoglu.recipequest.presentation.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -11,8 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.berkaykurtoglu.recipequest.presentation.detaiscreen.RecipeDetailScreen
+import com.berkaykurtoglu.recipequest.presentation.detailscreen.RecipeDetailScreen
 import com.berkaykurtoglu.recipequest.presentation.homescreen.HomeScreen
 import kotlinx.coroutines.CoroutineScope
 
@@ -53,7 +51,9 @@ fun RecipeQuestNavGraph(
         ){
             RecipeDetailScreen(
                 coroutineScope = coroutineScope
-            )
+            ){
+                navController.navigateUp()
+            }
         }
 
 
