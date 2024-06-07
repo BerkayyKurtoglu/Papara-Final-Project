@@ -10,24 +10,16 @@ import retrofit2.Response
 
 
 fun<T> apiFlow(
-    call : suspend () -> Response<T>
+    call : suspend () -> T
 ) : Flow<ApiResult<T>> = flow {
 
     try {
         emit(ApiResult.Loading)
         val response = call()
-        if (response.isSuccessful){
-            response.body()?.let {
-                emit(ApiResult.Success(it))
-            }
-        }else{
-            emit(ApiResult.Error(response.message()))
-        }
+        emit(ApiResult.Success(response))
 
-    }catch (e : HttpException){
-        emit(ApiResult.Error(e.localizedMessage ?: "Unexpected Error"))
-    }catch (e : IOException){
-        emit(ApiResult.Error(e.localizedMessage ?: "Unexpected Error"))
+    }catch (e : Exception){
+        emit(ApiResult.Error(e.localizedMessage ?: "An error occurred"))
     }
 
 
