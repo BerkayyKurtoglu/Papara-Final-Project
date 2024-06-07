@@ -3,9 +3,11 @@ package com.berkaykurtoglu.recipequest.data.source.remote.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class AnalyzedInstruction(
+data class Property(
+    @SerializedName("amount")
+    val amount: Double,
     @SerializedName("name")
     val name: String,
-    @SerializedName("steps")
-    val steps: List<Step>
+    @SerializedName("unit")
+    val unit: String
 )

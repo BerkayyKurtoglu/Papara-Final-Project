@@ -6,8 +6,6 @@ import com.google.gson.annotations.SerializedName
 data class Result(
     @SerializedName("aggregateLikes")
     val aggregateLikes: Int,
-    @SerializedName("analyzedInstructions")
-    val analyzedInstructions: List<AnalyzedInstruction>,
     @SerializedName("cheap")
     val cheap: Boolean,
     @SerializedName("cookingMinutes")
@@ -38,6 +36,8 @@ data class Result(
     val license: String?,
     @SerializedName("lowFodmap")
     val lowFodmap: Boolean,
+    @SerializedName("nutrition")
+    val nutrition: Nutrition,
     @SerializedName("occasions")
     val occasions: List<String>,
     @SerializedName("preparationMinutes")
