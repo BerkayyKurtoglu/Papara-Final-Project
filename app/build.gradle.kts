@@ -77,6 +77,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    implementation("androidx.compose.material3:material3:1.2.1")
+
+    implementation ("androidx.compose.material:material-icons-extended")
+
     //Retrofit
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
@@ -96,6 +100,7 @@ dependencies {
     implementation (libs.androidx.room.runtime)
     kapt (libs.androidx.room.compiler)
     implementation (libs.androidx.room.paging)
+    implementation ("androidx.room:room-ktx:2.6.1")
 
     //Coil
     implementation (libs.coil.compose)
