@@ -35,8 +35,11 @@ import kotlinx.coroutines.CoroutineScope
 fun RecipeDetailScreen(
     modifier: Modifier = Modifier,
     coroutineScope: CoroutineScope,
+    isNetworkAvailable: Boolean,
+    recipeId : Int?,
     onBackClick: () -> Unit
 ) {
+
 
     Scaffold(
         topBar = {

@@ -48,7 +48,7 @@ fun HomeScreen(
     coroutineScope: CoroutineScope,
     isNetworkAvailable: Boolean,
     homeScreenViewModel: HomeScreenViewModel = hiltViewModel(),
-    onNavigateToDetail : () -> Unit
+    onNavigateToDetail : (id : Int) -> Unit
 ) {
 
     val searchText = remember {
@@ -107,7 +107,7 @@ fun HomeScreen(
 
 
             }
-            if (true) NotConnectedBar(modifier = Modifier.width(250.dp))
+            if (isNetworkAvailable) NotConnectedBar(modifier = Modifier.width(250.dp))
             Spacer(modifier = Modifier.height(12.dp))
 
             FilterChips(
@@ -143,8 +143,8 @@ fun HomeScreen(
                                 .animateItemPlacement(),
                             resultModel = it,
                             onClickFavorite = {}
-                        ){
-                            onNavigateToDetail()
+                        ){id->
+                            onNavigateToDetail(id)
                         }
                     }
                     if (false){

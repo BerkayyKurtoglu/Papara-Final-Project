@@ -7,6 +7,7 @@ enum class ScreenArguments(
     val type : NavType<*>
 ){
 
+    DetailScreenRecipeId("name", NavType.IntType),
 
 
 }

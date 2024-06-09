@@ -49,12 +49,14 @@ fun CustomCard(
     resultModel : ResultModel,
     shape: RoundedCornerShape = RoundedCornerShape(20.dp),
     onClickFavorite: () -> Unit,
-    onNavigateToDetail : () -> Unit
+    onNavigateToDetail : (id : Int) -> Unit
 ) {
 
     Box(
         modifier = modifier.clickable {
-            onNavigateToDetail()
+            onNavigateToDetail(
+                resultModel.id
+            )
         }.fillMaxSize().aspectRatio(13f/9f)
     ) {
 

@@ -6,8 +6,8 @@ class RecipeQuestNavAction(
     private val navController: NavController
 ) {
 
-    fun navigateToRecipeDetail(){
-        navController.navigate(Screens.DetailScreen.route)
+    fun navigateToRecipeDetail(id : Int){
+        navController.navigate(Screens.DetailScreen.route+"/$id")
     }
 
     fun navigateToHome(isNetworkAvailable : Boolean){

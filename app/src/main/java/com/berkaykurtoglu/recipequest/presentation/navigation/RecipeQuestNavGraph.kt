@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.berkaykurtoglu.recipequest.presentation.detailscreen.RecipeDetailScreen
 import com.berkaykurtoglu.recipequest.presentation.homescreen.HomeScreen
 import kotlinx.coroutines.CoroutineScope
@@ -41,16 +42,24 @@ fun RecipeQuestNavGraph(
             HomeScreen(
                 coroutineScope = coroutineScope,
                 isNetworkAvailable = isNetworkAvailable
-            ) {
-                navAction.navigateToRecipeDetail()
+            ) {id->
+                navAction.navigateToRecipeDetail(id)
             }
         }
 
         composable(
-            route = Screens.DetailScreen.route
+            route = Screens.DetailScreen.route+"/{${ScreenArguments.DetailScreenRecipeId.argument}}",
+            arguments = listOf(
+                navArgument(ScreenArguments.DetailScreenRecipeId.argument){
+                    type = ScreenArguments.DetailScreenRecipeId.type
+                }
+            )
         ){
+            val recipeId = it.arguments?.getInt(ScreenArguments.DetailScreenRecipeId.argument)
             RecipeDetailScreen(
-                coroutineScope = coroutineScope
+                coroutineScope = coroutineScope,
+                isNetworkAvailable = isNetworkAvailable,
+                recipeId = recipeId
             ){
                 navController.navigateUp()
             }
