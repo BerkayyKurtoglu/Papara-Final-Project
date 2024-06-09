@@ -1,7 +1,5 @@
-package com.berkaykurtoglu.recipequest.domain.model
+package com.berkaykurtoglu.recipequest.domain.model.recipesmodel
 
-
-import com.google.gson.annotations.SerializedName
 
 data class RecipeModel(
     val number: Int? = null,

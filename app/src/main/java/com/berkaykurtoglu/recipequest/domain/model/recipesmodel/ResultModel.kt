@@ -1,6 +1,4 @@
-package com.berkaykurtoglu.recipequest.domain.model
-
-import com.google.gson.annotations.SerializedName
+package com.berkaykurtoglu.recipequest.domain.model.recipesmodel
 
 data class ResultModel(
     val cheap: Boolean?,
