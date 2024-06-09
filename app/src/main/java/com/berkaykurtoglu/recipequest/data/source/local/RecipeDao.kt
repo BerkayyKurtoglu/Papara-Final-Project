@@ -17,6 +17,7 @@ interface RecipeDao {
     fun getAllRecipes() : Flow<List<LocalRecipeResponse>>
 
     @Query("DELETE FROM local_recipes")
-    suspend fun deleteAllRecipes()
+    suspend fun deleteAllRecipes() : Int // number of row deleted
+
 
 }
