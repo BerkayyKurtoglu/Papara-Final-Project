@@ -111,7 +111,11 @@ dependencies {
     //Splash Screen
     implementation (libs.androidx.core.splashscreen)
 
+    //Chucker
+    implementation("com.github.chuckerteam.chucker:library:4.0.0")
 
+    //Coroutines
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
 
 
 
