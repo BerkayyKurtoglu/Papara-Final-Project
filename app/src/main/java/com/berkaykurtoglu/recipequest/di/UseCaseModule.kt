@@ -3,8 +3,10 @@ package com.berkaykurtoglu.recipequest.di
 import com.berkaykurtoglu.recipequest.domain.repository.HomeRepository
 import com.berkaykurtoglu.recipequest.domain.repository.SplashScreenRepository
 import com.berkaykurtoglu.recipequest.domain.usecase.CheckNetworkUseCase
+import com.berkaykurtoglu.recipequest.domain.usecase.DeleteAllCacheUseCase
 import com.berkaykurtoglu.recipequest.domain.usecase.GetAllRecipesFromLocalUseCase
 import com.berkaykurtoglu.recipequest.domain.usecase.GetAllRecipesRandomlyUseCase
+import com.berkaykurtoglu.recipequest.domain.usecase.InsertCacheUseCase
 import com.berkaykurtoglu.recipequest.domain.usecase.UseCase
 import dagger.Module
 import dagger.Provides
@@ -37,14 +39,30 @@ object UseCaseModule {
 
     @Singleton
     @Provides
+    fun provideDeleteAllCacheUseCase(
+        homeRepository: HomeRepository
+    ) = DeleteAllCacheUseCase(homeRepository)
+
+    @Provides
+    @Singleton
+    fun provideInsertCacheUseCase(
+        homeRepository: HomeRepository
+    ) = InsertCacheUseCase(homeRepository)
+
+    @Singleton
+    @Provides
     fun provideUseCase(
         checkNetworkUseCase: CheckNetworkUseCase,
         getAllRecipesRandomlyUseCase: GetAllRecipesRandomlyUseCase,
-        getAllRecipesFromLocalUseCase: GetAllRecipesFromLocalUseCase
+        getAllRecipesFromLocalUseCase: GetAllRecipesFromLocalUseCase,
+        deleteAllCacheUseCase: DeleteAllCacheUseCase,
+        insertCacheUseCase: InsertCacheUseCase
     ) = UseCase(
         checkNetworkUseCase = checkNetworkUseCase,
         getAllRecipesRandomlyUseCase = getAllRecipesRandomlyUseCase,
-        getAllRecipesFromLocalUseCase = getAllRecipesFromLocalUseCase
+        getAllRecipesFromLocalUseCase = getAllRecipesFromLocalUseCase,
+        deleteAllCacheUseCase = deleteAllCacheUseCase,
+        insertCacheUseCase = insertCacheUseCase
     )
 
 

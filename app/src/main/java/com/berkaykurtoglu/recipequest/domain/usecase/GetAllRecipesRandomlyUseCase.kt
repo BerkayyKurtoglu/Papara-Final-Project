@@ -7,6 +7,9 @@ class GetAllRecipesRandomlyUseCase @Inject constructor(
     private val homeRepository: HomeRepository
 ) {
 
-    suspend operator fun invoke() = homeRepository.getAllRecipesFromNetwork()
+    suspend operator fun invoke(offset: Int, number: Int) =
+        homeRepository.getAllRecipesFromNetwork(
+            offset, number
+        )
 
 }
