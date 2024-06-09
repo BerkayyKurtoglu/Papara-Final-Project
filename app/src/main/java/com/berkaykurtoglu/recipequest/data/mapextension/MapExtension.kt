@@ -1,11 +1,11 @@
 package com.berkaykurtoglu.recipequest.data.mapextension
 
 import com.berkaykurtoglu.recipequest.data.source.local.entity.LocalRecipeResponse
-import com.berkaykurtoglu.recipequest.data.source.remote.dto.Ingredient
-import com.berkaykurtoglu.recipequest.data.source.remote.dto.NutrientX
-import com.berkaykurtoglu.recipequest.data.source.remote.dto.Nutrition
-import com.berkaykurtoglu.recipequest.data.source.remote.dto.RecipeResponseDto
-import com.berkaykurtoglu.recipequest.data.source.remote.dto.Result
+import com.berkaykurtoglu.recipequest.data.source.remote.dto.allrecipesdto.Ingredient
+import com.berkaykurtoglu.recipequest.data.source.remote.dto.allrecipesdto.NutrientX
+import com.berkaykurtoglu.recipequest.data.source.remote.dto.allrecipesdto.Nutrition
+import com.berkaykurtoglu.recipequest.data.source.remote.dto.allrecipesdto.RecipeResponseDto
+import com.berkaykurtoglu.recipequest.data.source.remote.dto.allrecipesdto.Result
 import com.berkaykurtoglu.recipequest.domain.model.IngredientModel
 import com.berkaykurtoglu.recipequest.domain.model.NutrientXModel
 import com.berkaykurtoglu.recipequest.domain.model.NutritionModel
