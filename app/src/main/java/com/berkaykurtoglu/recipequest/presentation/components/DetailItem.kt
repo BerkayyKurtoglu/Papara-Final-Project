@@ -15,12 +15,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.berkaykurtoglu.recipequest.R
+import com.berkaykurtoglu.recipequest.domain.model.recipedetailmodel.ExtendedIngredientModel
 
 
 @Composable
 fun DetailItem(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    extendedIngredientModel: ExtendedIngredientModel
 ) {
 
     Row(
@@ -28,19 +31,11 @@ fun DetailItem(
         verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
     ) {
 
-        Image(
-            painter = painterResource(id = R.drawable.main_background),
-            contentDescription = "",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .clip(CircleShape)
-                .size(50.dp)
-        )
         Spacer(modifier = Modifier.width(10.dp))
-        Text(text = "Egg")
+        Text(text = extendedIngredientModel.name)
 
         Spacer(modifier = Modifier.weight(1f))
-        Text(text = "3 pc")
+        Text(text = "${extendedIngredientModel.amount} ${extendedIngredientModel.unit}")
 
     }
 
