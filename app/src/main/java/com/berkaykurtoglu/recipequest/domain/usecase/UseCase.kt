@@ -5,5 +5,6 @@ data class UseCase(
     val getAllRecipesRandomlyUseCase: GetAllRecipesRandomlyUseCase,
     val getAllRecipesFromLocalUseCase: GetAllRecipesFromLocalUseCase,
     val deleteAllCacheUseCase: DeleteAllCacheUseCase,
-    val insertCacheUseCase: InsertCacheUseCase
+    val insertCacheUseCase: InsertCacheUseCase,
+    val getRecipeByIdFromNetworkUseCase: GetRecipeByIdFromNetworkUseCase
 )

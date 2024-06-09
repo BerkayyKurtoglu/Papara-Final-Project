@@ -1,11 +1,13 @@
 package com.berkaykurtoglu.recipequest.di
 
 import com.berkaykurtoglu.recipequest.domain.repository.HomeRepository
+import com.berkaykurtoglu.recipequest.domain.repository.DetailScreenRepository
 import com.berkaykurtoglu.recipequest.domain.repository.SplashScreenRepository
 import com.berkaykurtoglu.recipequest.domain.usecase.CheckNetworkUseCase
 import com.berkaykurtoglu.recipequest.domain.usecase.DeleteAllCacheUseCase
 import com.berkaykurtoglu.recipequest.domain.usecase.GetAllRecipesFromLocalUseCase
 import com.berkaykurtoglu.recipequest.domain.usecase.GetAllRecipesRandomlyUseCase
+import com.berkaykurtoglu.recipequest.domain.usecase.GetRecipeByIdFromNetworkUseCase
 import com.berkaykurtoglu.recipequest.domain.usecase.InsertCacheUseCase
 import com.berkaykurtoglu.recipequest.domain.usecase.UseCase
 import dagger.Module
@@ -49,6 +51,12 @@ object UseCaseModule {
         homeRepository: HomeRepository
     ) = InsertCacheUseCase(homeRepository)
 
+    @Provides
+    @Singleton
+    fun provideGetRecipeByIdUseCase(
+        detailScreenRepository: DetailScreenRepository
+    ) = GetRecipeByIdFromNetworkUseCase(detailScreenRepository)
+
     @Singleton
     @Provides
     fun provideUseCase(
@@ -56,13 +64,15 @@ object UseCaseModule {
         getAllRecipesRandomlyUseCase: GetAllRecipesRandomlyUseCase,
         getAllRecipesFromLocalUseCase: GetAllRecipesFromLocalUseCase,
         deleteAllCacheUseCase: DeleteAllCacheUseCase,
-        insertCacheUseCase: InsertCacheUseCase
+        insertCacheUseCase: InsertCacheUseCase,
+        getRecipeByIdFromNetworkUseCase: GetRecipeByIdFromNetworkUseCase
     ) = UseCase(
         checkNetworkUseCase = checkNetworkUseCase,
         getAllRecipesRandomlyUseCase = getAllRecipesRandomlyUseCase,
         getAllRecipesFromLocalUseCase = getAllRecipesFromLocalUseCase,
         deleteAllCacheUseCase = deleteAllCacheUseCase,
-        insertCacheUseCase = insertCacheUseCase
+        insertCacheUseCase = insertCacheUseCase,
+        getRecipeByIdFromNetworkUseCase = getRecipeByIdFromNetworkUseCase
     )
 
 
