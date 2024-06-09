@@ -1,4 +1,4 @@
-package com.berkaykurtoglu.recipequest.data.source.remote.dto
+package com.berkaykurtoglu.recipequest.data.source.remote.dto.allrecipesdto
 
 
 import com.google.gson.annotations.SerializedName

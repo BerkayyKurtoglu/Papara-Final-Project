@@ -1,7 +1,6 @@
-package com.berkaykurtoglu.recipequest.data.source.remote.dto
+package com.berkaykurtoglu.recipequest.data.source.remote.dto.allrecipesdto
 
 
-import com.berkaykurtoglu.recipequest.domain.model.NutritionModel
 import com.google.gson.annotations.SerializedName
 
 data class Nutrition(
