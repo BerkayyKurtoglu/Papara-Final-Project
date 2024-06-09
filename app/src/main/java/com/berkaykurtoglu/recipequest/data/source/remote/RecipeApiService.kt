@@ -1,8 +1,7 @@
 package com.berkaykurtoglu.recipequest.data.source.remote
 
-import com.berkaykurtoglu.recipequest.data.source.remote.dto.RecipeResponseDto
+import com.berkaykurtoglu.recipequest.data.source.remote.dto.allrecipesdto.RecipeResponseDto
 import com.berkaykurtoglu.recipequest.util.Contants
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -14,7 +13,8 @@ interface RecipeApiService {
         @Query("addRecipeInformation") addRecipeInformation: Boolean = true,
         @Query("addRecipeNutrition") addRecipeNutrition: Boolean = true,
         @Query("offset") offset: Int = 0,
-        @Query("number") number: Int = 50
+        @Query("number") number: Int = 50,
+        @Query("sort") sort : String = "random"
     ) : RecipeResponseDto
 
 }
