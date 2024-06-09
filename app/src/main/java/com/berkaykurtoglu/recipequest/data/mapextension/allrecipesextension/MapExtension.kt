@@ -1,4 +1,4 @@
-package com.berkaykurtoglu.recipequest.data.mapextension
+package com.berkaykurtoglu.recipequest.data.mapextension.allrecipesextension
 
 import com.berkaykurtoglu.recipequest.data.source.local.entity.LocalRecipeResponse
 import com.berkaykurtoglu.recipequest.data.source.remote.dto.allrecipesdto.Ingredient
@@ -6,11 +6,11 @@ import com.berkaykurtoglu.recipequest.data.source.remote.dto.allrecipesdto.Nutri
 import com.berkaykurtoglu.recipequest.data.source.remote.dto.allrecipesdto.Nutrition
 import com.berkaykurtoglu.recipequest.data.source.remote.dto.allrecipesdto.RecipeResponseDto
 import com.berkaykurtoglu.recipequest.data.source.remote.dto.allrecipesdto.Result
-import com.berkaykurtoglu.recipequest.domain.model.IngredientModel
-import com.berkaykurtoglu.recipequest.domain.model.NutrientXModel
-import com.berkaykurtoglu.recipequest.domain.model.NutritionModel
-import com.berkaykurtoglu.recipequest.domain.model.RecipeModel
-import com.berkaykurtoglu.recipequest.domain.model.ResultModel
+import com.berkaykurtoglu.recipequest.domain.model.recipesmodel.IngredientModel
+import com.berkaykurtoglu.recipequest.domain.model.recipesmodel.NutrientXModel
+import com.berkaykurtoglu.recipequest.domain.model.recipesmodel.NutritionModel
+import com.berkaykurtoglu.recipequest.domain.model.recipesmodel.RecipeModel
+import com.berkaykurtoglu.recipequest.domain.model.recipesmodel.ResultModel
 
 fun RecipeResponseDto.toLocal() : List<LocalRecipeResponse> =
     this.results.map {result->
