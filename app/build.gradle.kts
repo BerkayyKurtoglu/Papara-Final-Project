@@ -117,6 +117,12 @@ dependencies {
     //Coroutines
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
 
+    //Paging3
+    implementation ("androidx.paging:paging-runtime:3.3.0")
+    //Jetpack Compose integration
+    implementation ("androidx.paging:paging-compose:3.3.0")
+
+
 
 
 }
