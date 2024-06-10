@@ -85,18 +85,14 @@ data class RecipeDetailDto(
     fun toRecipeDetailModel() =
         RecipeDetailModel(
             analyzedInstructionModels = analyzedInstructions.map { it.toAnalyzedInstructionModel() },
-            dairyFree = true,
             dishTypes = dishTypes,
             extendedIngredientModels = extendedIngredients.map { it.toExtendedIngredienModel() },
-            glutenFree = glutenFree,
             id = id,
             image = image,
             instructions = instructions,
             readyInMinutes = readyInMinutes,
             servings = servings,
             title = title,
-            vegan = vegan,
-            vegetarian = vegetarian,
             veryPopular = veryPopular,
             sourceName = sourceName,
             sourceUrl = sourceUrl,
