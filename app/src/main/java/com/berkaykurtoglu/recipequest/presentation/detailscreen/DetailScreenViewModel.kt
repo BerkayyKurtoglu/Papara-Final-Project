@@ -31,10 +31,6 @@ class DetailScreenViewModel @Inject constructor(
             is DetailScreenEvent.OnGetRecipeById -> {
                 getRecipeByIdFromNetwork(event.id)
             }
-
-            is DetailScreenEvent.OnAddCache -> {
-                saveRecipeToCache(event.recipe)
-            }
         }
     }
 

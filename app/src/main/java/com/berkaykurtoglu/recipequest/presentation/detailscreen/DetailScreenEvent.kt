@@ -6,6 +6,4 @@ sealed class DetailScreenEvent {
 
     data class OnAddFavorite(val recipe : RecipeDetailModel) : DetailScreenEvent()
     data class OnGetRecipeById(val id : Int?) : DetailScreenEvent()
-    data class OnAddCache(val recipe : RecipeDetailModel?) : DetailScreenEvent()
-
 }
