@@ -37,8 +37,9 @@ object RepositoryModule{
     @Singleton
     @Provides
     fun provideDetailRepository(
-        remoteDataSource: RemoteDataSource
-    ) : DetailScreenRepository = DetailScreenRepositoryImpl(remoteDataSource)
+        remoteDataSource: RemoteDataSource,
+        localDataSource: RecipeDao
+    ) : DetailScreenRepository = DetailScreenRepositoryImpl(remoteDataSource,localDataSource)
 
     @Singleton
     @Provides
