@@ -12,7 +12,7 @@ import com.berkaykurtoglu.recipequest.domain.usecase.GetCacheCountUseCase
 import com.berkaykurtoglu.recipequest.domain.usecase.GetOldestRecipeUseCase
 import com.berkaykurtoglu.recipequest.domain.usecase.GetRecipeByIdFromNetworkUseCase
 import com.berkaykurtoglu.recipequest.domain.usecase.InsertCacheUseCase
-import com.berkaykurtoglu.recipequest.domain.usecase.SaveRecipeToCache
+import com.berkaykurtoglu.recipequest.domain.usecase.SaveRecipeToCacheUseCase
 import com.berkaykurtoglu.recipequest.domain.usecase.UseCase
 import dagger.Module
 import dagger.Provides
@@ -65,7 +65,7 @@ object UseCaseModule {
     @Singleton
     fun provideSaveRecipeToCacheUseCase(
         detailScreenRepository: DetailScreenRepository
-    ) = SaveRecipeToCache(detailScreenRepository)
+    ) = SaveRecipeToCacheUseCase(detailScreenRepository)
 
     @Provides
     @Singleton
@@ -94,7 +94,7 @@ object UseCaseModule {
         deleteAllCacheUseCase: DeleteAllCacheUseCase,
         insertCacheUseCase: InsertCacheUseCase,
         getRecipeByIdFromNetworkUseCase: GetRecipeByIdFromNetworkUseCase,
-        saveRecipeToCache: SaveRecipeToCache,
+        saveRecipeToCacheUseCase: SaveRecipeToCacheUseCase,
         getCacheCountUseCase: GetCacheCountUseCase,
         getOldestRecipeUseCase: GetOldestRecipeUseCase,
         deleteRecipeFromCache: DeleteRecipeCacheUseCase
@@ -105,7 +105,7 @@ object UseCaseModule {
         deleteAllCacheUseCase = deleteAllCacheUseCase,
         insertCacheUseCase = insertCacheUseCase,
         getRecipeByIdFromNetworkUseCase = getRecipeByIdFromNetworkUseCase,
-        saveRecipeToCache = saveRecipeToCache,
+        saveRecipeToCacheUseCase = saveRecipeToCacheUseCase,
         getCacheCountUseCase = getCacheCountUseCase,
         getOldestUseCase = getOldestRecipeUseCase,
         deleteRecipeFromCache = deleteRecipeFromCache
