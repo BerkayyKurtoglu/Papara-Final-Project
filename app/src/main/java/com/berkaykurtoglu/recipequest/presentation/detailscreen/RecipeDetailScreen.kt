@@ -2,6 +2,7 @@ package com.berkaykurtoglu.recipequest.presentation.detailscreen
 
 import android.text.method.LinkMovementMethod
 import android.widget.TextView
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -31,11 +32,12 @@ import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.berkaykurtoglu.recipequest.presentation.components.AllergenDetailCard
+import com.berkaykurtoglu.recipequest.presentation.components.CustomTabRow
 import com.berkaykurtoglu.recipequest.presentation.components.CustomTopBar
-import com.berkaykurtoglu.recipequest.presentation.components.DetailItem
 import com.berkaykurtoglu.recipequest.presentation.components.DishTypesCard
 import kotlinx.coroutines.CoroutineScope
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun RecipeDetailScreen(
     modifier: Modifier = Modifier,
@@ -121,7 +123,16 @@ fun RecipeDetailScreen(
                             }
                         }
                     }
-                    item {
+
+                    item{
+                        CustomTabRow(
+                            coroutineScope = coroutineScope,
+                            ingredients = screenState.value.data!!.extendedIngredientModels,
+                            instructionSteps = screenState.value.data!!.analyzedInstructionModels[0].stepModels
+                        )
+                    }
+
+                    /*item {
                         Text(
                             text = "Ingredients",
                             fontWeight = FontWeight.Bold,
@@ -133,7 +144,7 @@ fun RecipeDetailScreen(
                             modifier = Modifier,
                             extendedIngredientModel = it
                         )
-                    }
+                    }*/
                 }
             }
         }
