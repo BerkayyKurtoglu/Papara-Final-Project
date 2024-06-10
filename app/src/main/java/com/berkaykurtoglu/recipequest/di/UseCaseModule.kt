@@ -5,10 +5,14 @@ import com.berkaykurtoglu.recipequest.domain.repository.DetailScreenRepository
 import com.berkaykurtoglu.recipequest.domain.repository.SplashScreenRepository
 import com.berkaykurtoglu.recipequest.domain.usecase.CheckNetworkUseCase
 import com.berkaykurtoglu.recipequest.domain.usecase.DeleteAllCacheUseCase
+import com.berkaykurtoglu.recipequest.domain.usecase.DeleteRecipeCacheUseCase
 import com.berkaykurtoglu.recipequest.domain.usecase.GetAllRecipesFromLocalUseCase
 import com.berkaykurtoglu.recipequest.domain.usecase.GetAllRecipesRandomlyUseCase
+import com.berkaykurtoglu.recipequest.domain.usecase.GetCacheCountUseCase
+import com.berkaykurtoglu.recipequest.domain.usecase.GetOldestRecipeUseCase
 import com.berkaykurtoglu.recipequest.domain.usecase.GetRecipeByIdFromNetworkUseCase
 import com.berkaykurtoglu.recipequest.domain.usecase.InsertCacheUseCase
+import com.berkaykurtoglu.recipequest.domain.usecase.SaveRecipeToCache
 import com.berkaykurtoglu.recipequest.domain.usecase.UseCase
 import dagger.Module
 import dagger.Provides
@@ -57,6 +61,30 @@ object UseCaseModule {
         detailScreenRepository: DetailScreenRepository
     ) = GetRecipeByIdFromNetworkUseCase(detailScreenRepository)
 
+    @Provides
+    @Singleton
+    fun provideSaveRecipeToCacheUseCase(
+        detailScreenRepository: DetailScreenRepository
+    ) = SaveRecipeToCache(detailScreenRepository)
+
+    @Provides
+    @Singleton
+    fun provideGetCacheCountUseCase(
+        detailScreenRepository: DetailScreenRepository
+    ) = GetCacheCountUseCase(detailScreenRepository)
+
+    @Provides
+    @Singleton
+    fun provideOldestUseCase(
+        detailScreenRepository: DetailScreenRepository
+    ) = GetOldestRecipeUseCase(detailScreenRepository)
+
+    @Provides
+    @Singleton
+    fun provideDeleteRecipeCacheUseCase(
+        detailScreenRepository: DetailScreenRepository
+    ) = DeleteRecipeCacheUseCase(detailScreenRepository)
+
     @Singleton
     @Provides
     fun provideUseCase(
@@ -65,14 +93,22 @@ object UseCaseModule {
         getAllRecipesFromLocalUseCase: GetAllRecipesFromLocalUseCase,
         deleteAllCacheUseCase: DeleteAllCacheUseCase,
         insertCacheUseCase: InsertCacheUseCase,
-        getRecipeByIdFromNetworkUseCase: GetRecipeByIdFromNetworkUseCase
+        getRecipeByIdFromNetworkUseCase: GetRecipeByIdFromNetworkUseCase,
+        saveRecipeToCache: SaveRecipeToCache,
+        getCacheCountUseCase: GetCacheCountUseCase,
+        getOldestRecipeUseCase: GetOldestRecipeUseCase,
+        deleteRecipeFromCache: DeleteRecipeCacheUseCase
     ) = UseCase(
         checkNetworkUseCase = checkNetworkUseCase,
         getAllRecipesRandomlyUseCase = getAllRecipesRandomlyUseCase,
         getAllRecipesFromLocalUseCase = getAllRecipesFromLocalUseCase,
         deleteAllCacheUseCase = deleteAllCacheUseCase,
         insertCacheUseCase = insertCacheUseCase,
-        getRecipeByIdFromNetworkUseCase = getRecipeByIdFromNetworkUseCase
+        getRecipeByIdFromNetworkUseCase = getRecipeByIdFromNetworkUseCase,
+        saveRecipeToCache = saveRecipeToCache,
+        getCacheCountUseCase = getCacheCountUseCase,
+        getOldestUseCase = getOldestRecipeUseCase,
+        deleteRecipeFromCache = deleteRecipeFromCache
     )
 
 
