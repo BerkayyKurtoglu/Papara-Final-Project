@@ -12,6 +12,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.berkaykurtoglu.recipequest.presentation.detailscreen.RecipeDetailScreen
+import com.berkaykurtoglu.recipequest.presentation.favoritescreen.FavoritesScreen
 import com.berkaykurtoglu.recipequest.presentation.homescreen.HomeScreen
 import kotlinx.coroutines.CoroutineScope
 
@@ -41,10 +42,14 @@ fun RecipeQuestNavGraph(
         ){
             HomeScreen(
                 coroutineScope = coroutineScope,
-                isNetworkAvailable = isNetworkAvailable
-            ) {id->
-                navAction.navigateToRecipeDetail(id)
-            }
+                isNetworkAvailable = isNetworkAvailable,
+                onNavigateToDetail = {id->
+                    navAction.navigateToRecipeDetail(id)
+                },
+                onNavigateToFavorite = {
+                    navAction.navigateToFavorites()
+                }
+            )
         }
 
         composable(
@@ -63,6 +68,10 @@ fun RecipeQuestNavGraph(
             ){
                 navController.navigateUp()
             }
+        }
+
+        composable(Screens.FavoriteScreen.route){
+            FavoritesScreen()
         }
 
 

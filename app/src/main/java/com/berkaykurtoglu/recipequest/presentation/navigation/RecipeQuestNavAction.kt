@@ -19,5 +19,9 @@ class RecipeQuestNavAction(
         }
     }
 
+    fun navigateToFavorites(){
+        navController.navigate(Screens.FavoriteScreen.route)
+    }
+
 
 }
