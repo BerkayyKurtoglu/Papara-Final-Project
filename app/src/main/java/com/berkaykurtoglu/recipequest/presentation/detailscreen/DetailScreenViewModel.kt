@@ -2,9 +2,12 @@ package com.berkaykurtoglu.recipequest.presentation.detailscreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.berkaykurtoglu.recipequest.data.mapextension.toRecipeDetailEntity
+import com.berkaykurtoglu.recipequest.domain.model.recipedetailmodel.RecipeDetailModel
 import com.berkaykurtoglu.recipequest.domain.usecase.UseCase
 import com.berkaykurtoglu.recipequest.util.ApiResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -27,6 +30,32 @@ class DetailScreenViewModel @Inject constructor(
 
             is DetailScreenEvent.OnGetRecipeById -> {
                 getRecipeByIdFromNetwork(event.id)
+            }
+
+            is DetailScreenEvent.OnAddCache -> {
+                saveRecipeToCache(event.recipe)
+            }
+        }
+    }
+
+    private fun saveRecipeToCache(
+        recipe : RecipeDetailModel?
+    ){
+        viewModelScope.launch {
+            val count = async { useCase.getCacheCountUseCase() }.await()
+            if (count<50){
+                recipe?.let {
+                    useCase.saveRecipeToCacheUseCase(recipe.toRecipeDetailEntity())
+                }
+            }else{
+                //Todo : Delete Oldest Recipe Then Add
+                val oldestRecipe = async { useCase.getOldestUseCase() }.await()
+                val deletedCount = async{ useCase.deleteRecipeFromCache(oldestRecipe.id) }.await()
+                if (deletedCount == 1) {
+                    recipe?.let {
+                        useCase.saveRecipeToCacheUseCase(recipe.toRecipeDetailEntity())
+                    }
+                }
             }
         }
     }
@@ -65,6 +94,7 @@ class DetailScreenViewModel @Inject constructor(
                                     errorMessage = ""
                                 )
                             }
+                            saveRecipeToCache(apiResult.data.toRecipeDetailModel())
                         }
                     }
 
