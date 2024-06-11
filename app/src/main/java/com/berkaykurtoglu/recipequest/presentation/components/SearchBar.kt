@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,37 +40,54 @@ fun CustomSearchBar(
         onQueryChange = {
             text.value = it
         },
-        onSearch = {
-            active.value = false
-        },
+        onSearch = onSearch,
         active = active.value,
         onActiveChange = {
             active.value = it
         },
         modifier = Modifier,
-        leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = "Search")},
+        leadingIcon = {
+                      if (active.value){
+                          IconButton(
+                              onClick = {
+                                  text.value = ""
+                                  active.value = false
+                              }
+                          ){
+                              Icon(
+                                  imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                                  contentDescription = "Back Button"
+                              )
+                          }
+                      }else{
+                          Icon(
+                              imageVector = Icons.Outlined.Search,
+                              contentDescription = "Search Icon"
+                          )
+                      }
+        },
         trailingIcon = {
-            if(active.value){
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = "Close",
-                    modifier = Modifier.clickable {
-                        if(text.value.isNotBlank()) text.value = ""
-                        else active.value = false
-                    }
-                )
-            }else{
+            if(!active.value) {
                 IconButton(
                     onClick = { onFavoriteClicked() },
-                    modifier = Modifier.border(BorderStroke(1.dp, Color.Gray), shape = CircleShape)
+                    modifier = Modifier.border(BorderStroke(0.3.dp, Color.Gray), shape = CircleShape)
                 ) {
                     Icon(imageVector = Icons.Filled.Favorite, contentDescription = "Fav")
                 }
             }
+            if(active.value && text.value.isNotBlank()){
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "Close",
+                    modifier = Modifier.clickable {
+                        text.value = ""
+                    }
+                )
+            }
         },
         placeholder = {
-            Text(text = "Search Any Recipe..")
-        }
+            Text(text = "Search")
+        },
     ) {
         content()
     }
