@@ -3,9 +3,10 @@ package com.berkaykurtoglu.recipequest.data.source.local.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.berkaykurtoglu.recipequest.domain.model.recipedetailmodel.RecipeDetailModel
+import com.berkaykurtoglu.recipequest.domain.model.recipesmodel.RecipeModel
 import java.util.Date
 
-@Entity("recipe_cache")
+@Entity("recipe_entity")
 data class RecipeDetailEntity(
     val analyzedInstructionList: List<AnalyzedInstructionEntity>,
     val allergenList: List<AllergenEntity>,
@@ -34,5 +35,7 @@ data class RecipeDetailEntity(
             extendedIngredientList.map { it.toExtendedIngredientModel() },
             id,image,instructions,readyInMinutes,servings,sourceName,sourceUrl,spoonacularScore,summary,title,veryPopular)
 
+    fun toRecipeModel() : RecipeModel =
+        RecipeModel(sourceName, title, readyInMinutes, image, id)
 
 }
