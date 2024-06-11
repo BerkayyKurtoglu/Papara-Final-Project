@@ -17,5 +17,7 @@ data class UseCase @Inject constructor(
     val deleteRecipeFromFavoriteUseCase: DeleteRecipeFromFavoritesUseCase,
     val getAllFavoritesUseCase: GetAllFavoritesUseCase,
     val getRecipeByIdFromCacheUseCase: GetRecipeByIdFromCacheUseCase,
-    val getRecipeByIdFromFavoriteUseCase: GetRecipeByIdFromFavoriteUseCase
+    val getRecipeByIdFromFavoriteUseCase: GetRecipeByIdFromFavoriteUseCase,
+    val searchRecipesFromNetworkUseCase : SearchRecipesFromNetworkUseCase,
+    val searchRecipeFromCacheUseCase: SearchRecipeFromCacheUseCase
 )
