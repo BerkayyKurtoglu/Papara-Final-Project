@@ -4,7 +4,8 @@ import com.berkaykurtoglu.recipequest.util.FilterCategorie
 
 sealed class HomeScreenEvent {
 
-    data class OnFetchRecipes(val isConnected : Boolean, val offset : Int) : HomeScreenEvent()
+    data class OnFetchRecipes(val isConnected : Boolean) : HomeScreenEvent()
     data class OnFilter(val filter : FilterCategorie) : HomeScreenEvent()
+    data class OnSearchRecipes(val query : String, val isNetworkAvailable : Boolean) : HomeScreenEvent()
 
 }
