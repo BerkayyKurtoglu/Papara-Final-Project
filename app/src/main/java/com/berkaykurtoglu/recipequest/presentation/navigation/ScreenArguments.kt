@@ -8,6 +8,6 @@ enum class ScreenArguments(
 ){
 
     DetailScreenRecipeId("name", NavType.IntType),
-
+    DetailScreenComingId("id", NavType.IntType)
 
 }
