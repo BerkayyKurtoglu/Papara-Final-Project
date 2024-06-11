@@ -1,31 +1,15 @@
 package com.berkaykurtoglu.recipequest.di
 
-import com.berkaykurtoglu.recipequest.domain.repository.HomeRepository
-import com.berkaykurtoglu.recipequest.domain.repository.DetailScreenRepository
-import com.berkaykurtoglu.recipequest.domain.repository.SplashScreenRepository
-import com.berkaykurtoglu.recipequest.domain.usecase.CheckNetworkUseCase
-import com.berkaykurtoglu.recipequest.domain.usecase.DeleteAllCacheUseCase
-import com.berkaykurtoglu.recipequest.domain.usecase.DeleteRecipeCacheUseCase
-import com.berkaykurtoglu.recipequest.domain.usecase.GetAllRecipesFromLocalUseCase
-import com.berkaykurtoglu.recipequest.domain.usecase.GetAllRecipesRandomlyUseCase
-import com.berkaykurtoglu.recipequest.domain.usecase.GetCacheCountUseCase
-import com.berkaykurtoglu.recipequest.domain.usecase.GetOldestRecipeUseCase
-import com.berkaykurtoglu.recipequest.domain.usecase.GetRecipeByIdFromNetworkUseCase
-import com.berkaykurtoglu.recipequest.domain.usecase.InsertCacheUseCase
-import com.berkaykurtoglu.recipequest.domain.usecase.SaveRecipeToCacheUseCase
-import com.berkaykurtoglu.recipequest.domain.usecase.UseCase
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
 
 @Module
 @InstallIn(SingletonComponent::class)
 object UseCaseModule {
 
-    @Singleton
+   /* @Singleton
     @Provides
     fun provideNetworkUseCase(
         splashScreenRepository: SplashScreenRepository
@@ -85,7 +69,13 @@ object UseCaseModule {
         detailScreenRepository: DetailScreenRepository
     ) = DeleteRecipeCacheUseCase(detailScreenRepository)
 
+    @Provides
     @Singleton
+    fun provideInsertFavoritesUseCase(
+        detailScreenRepository: DetailScreenRepository
+    ) = InsertRecipeToFavoriteUseCase(detailScreenRepository)
+
+    /*@Singleton
     @Provides
     fun provideUseCase(
         checkNetworkUseCase: CheckNetworkUseCase,
@@ -97,7 +87,8 @@ object UseCaseModule {
         saveRecipeToCacheUseCase: SaveRecipeToCacheUseCase,
         getCacheCountUseCase: GetCacheCountUseCase,
         getOldestRecipeUseCase: GetOldestRecipeUseCase,
-        deleteRecipeFromCache: DeleteRecipeCacheUseCase
+        deleteRecipeFromCache: DeleteRecipeCacheUseCase,
+        insertRecipeToFavoriteUseCase: InsertRecipeToFavoriteUseCase
     ) = UseCase(
         checkNetworkUseCase = checkNetworkUseCase,
         getAllRecipesRandomlyUseCase = getAllRecipesRandomlyUseCase,
@@ -108,8 +99,9 @@ object UseCaseModule {
         saveRecipeToCacheUseCase = saveRecipeToCacheUseCase,
         getCacheCountUseCase = getCacheCountUseCase,
         getOldestUseCase = getOldestRecipeUseCase,
-        deleteRecipeFromCache = deleteRecipeFromCache
-    )
+        deleteRecipeFromCache = deleteRecipeFromCache,
+        insertRecipeToFavoriteUseCase = insertRecipeToFavoriteUseCase
+    )*/*/
 
 
 }
