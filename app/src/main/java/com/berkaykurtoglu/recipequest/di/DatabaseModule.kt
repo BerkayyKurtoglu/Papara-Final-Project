@@ -2,8 +2,10 @@ package com.berkaykurtoglu.recipequest.di
 
 import android.content.Context
 import androidx.room.Room
-import com.berkaykurtoglu.recipequest.data.source.local.RecipeDao
-import com.berkaykurtoglu.recipequest.data.source.local.RecipeDatabase
+import com.berkaykurtoglu.recipequest.data.source.local.cachedatabase.CacheDao
+import com.berkaykurtoglu.recipequest.data.source.local.cachedatabase.CacheDatabase
+import com.berkaykurtoglu.recipequest.data.source.local.favoritesdatabase.FavoritesDao
+import com.berkaykurtoglu.recipequest.data.source.local.favoritesdatabase.FavoritesDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,19 +21,35 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(
+    fun provideCacheDatabase(
         @ApplicationContext context: Context
-    ): RecipeDatabase = Room.databaseBuilder(
+    ): CacheDatabase = Room.databaseBuilder(
         context,
-        RecipeDatabase::class.java,
-        "recipe_database"
+        CacheDatabase::class.java,
+        "cache_database"
     ).build()
 
     @Singleton
     @Provides
     fun provideRecipeDao(
-        database: RecipeDatabase
-    ) : RecipeDao = database.recipeDao()
+        database: CacheDatabase
+    ) : CacheDao = database.cacheDao()
+
+    @Singleton
+    @Provides
+    fun provideFavoriteDatabase(
+        @ApplicationContext context: Context
+    ): FavoritesDatabase = Room.databaseBuilder(
+        context,
+        FavoritesDatabase::class.java,
+        "favorites_database"
+    ).build()
+
+    @Singleton
+    @Provides
+    fun provideFavoritesDao(
+        database: FavoritesDatabase
+    ) : FavoritesDao = database.favoritesDao()
 
 
 }
