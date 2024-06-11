@@ -4,6 +4,6 @@ import com.berkaykurtoglu.recipequest.domain.model.recipedetailmodel.RecipeDetai
 
 sealed class DetailScreenEvent {
 
-    data class OnAddFavorite(val recipe : RecipeDetailModel) : DetailScreenEvent()
-    data class OnGetRecipeById(val id : Int?) : DetailScreenEvent()
+    data object OnAddFavorite : DetailScreenEvent()
+    data class OnGetRecipeById(val id : Int?, val comingScreenId : Int?, val isNetworkAvailable : Boolean) : DetailScreenEvent()
 }
