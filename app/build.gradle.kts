@@ -123,6 +123,14 @@ dependencies {
     implementation ("androidx.paging:paging-compose:3.3.0")
 
 
+    //Work Manager
+
+    // Kotlin + coroutines
+    implementation ("androidx.work:work-runtime-ktx:2.9.0")
+    implementation ("androidx.hilt:hilt-work:1.2.0")
+
+
+
 
 
 }
