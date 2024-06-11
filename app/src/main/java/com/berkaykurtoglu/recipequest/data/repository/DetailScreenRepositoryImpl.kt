@@ -1,33 +1,51 @@
 package com.berkaykurtoglu.recipequest.data.repository
 
-import com.berkaykurtoglu.recipequest.data.source.local.RecipeDao
+import com.berkaykurtoglu.recipequest.data.source.local.cachedatabase.CacheDao
 import com.berkaykurtoglu.recipequest.data.source.local.entity.RecipeDetailEntity
+import com.berkaykurtoglu.recipequest.data.source.local.favoritesdatabase.FavoritesDao
 import com.berkaykurtoglu.recipequest.data.source.remote.dto.specificdto.RecipeDetailDto
 import com.berkaykurtoglu.recipequest.domain.datasource.RemoteDataSource
 import com.berkaykurtoglu.recipequest.domain.repository.DetailScreenRepository
 import com.berkaykurtoglu.recipequest.util.ApiResult
+import com.berkaykurtoglu.recipequest.util.apiFlow
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class DetailScreenRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
-    private val localDataSource : RecipeDao
+    private val cacheDataSource : CacheDao,
+    private val favoritesDataSource : FavoritesDao
 ) : DetailScreenRepository {
 
     override suspend fun fetchRecipeFromNetwork(id: Int) : Flow<ApiResult<RecipeDetailDto>> =
         remoteDataSource.getRecipeById(id)
 
     override suspend fun saveRecipeToCache(recipe: RecipeDetailEntity) =
-        localDataSource.insertRecipe(recipe)
+        cacheDataSource.insertRecipe(recipe)
 
     override suspend fun getCacheCount(): Int =
-        localDataSource.getCacheCount()
+        cacheDataSource.cacheGetCount()
 
     override suspend fun getOldestRecipe(): RecipeDetailEntity =
-        localDataSource.getOldestRecipe()
+        cacheDataSource.cacheGetOldestRecipe()
 
     override suspend fun deleteRecipeFromCache(id : Int): Int =
-        localDataSource.deleteRecipeFromCache(id)
+        cacheDataSource.cacheDeleteRecipeFromCache(id)
 
+    override suspend fun saveRecipeToFavorites(recipe: RecipeDetailEntity): Long =
+        favoritesDataSource.insertRecipeToFavorites(recipe)
+
+    override suspend fun deleteRecipeFromFavorites(id: Int): Int =
+        favoritesDataSource.deleteRecipeFromFavorites(id)
+
+    override suspend fun getRecipeByIdFromCache(id: Int): Flow<ApiResult<RecipeDetailEntity>> =
+        apiFlow {
+            cacheDataSource.cacheGetRecipeById(id)
+        }
+
+    override suspend fun getRecipeByIdFromFavorite(id: Int): Flow<ApiResult<RecipeDetailEntity>> =
+        apiFlow {
+            favoritesDataSource.getFavoriteById(id)
+        }
 
 }
