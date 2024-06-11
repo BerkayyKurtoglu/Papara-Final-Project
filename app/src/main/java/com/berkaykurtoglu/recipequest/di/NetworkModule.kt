@@ -3,6 +3,8 @@ package com.berkaykurtoglu.recipequest.di
 import android.content.Context
 import android.net.ConnectivityManager
 import com.berkaykurtoglu.recipequest.data.source.remote.RecipeApiService
+import com.berkaykurtoglu.recipequest.data.source.remote.RemoteDataSourceImpl
+import com.berkaykurtoglu.recipequest.domain.datasource.RemoteDataSource
 import com.berkaykurtoglu.recipequest.util.Contants
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import dagger.Module
@@ -40,7 +42,5 @@ object NetworkModule {
     fun provideRecipeService(
         retrofit: Retrofit
     ): RecipeApiService = retrofit.create(RecipeApiService::class.java)
-
-
 
 }

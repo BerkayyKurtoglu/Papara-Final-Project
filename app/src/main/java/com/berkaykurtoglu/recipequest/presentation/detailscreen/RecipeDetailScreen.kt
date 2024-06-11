@@ -2,6 +2,7 @@ package com.berkaykurtoglu.recipequest.presentation.detailscreen
 
 import android.text.method.LinkMovementMethod
 import android.widget.TextView
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -44,6 +46,7 @@ fun RecipeDetailScreen(
     coroutineScope: CoroutineScope,
     isNetworkAvailable: Boolean,
     recipeId : Int?,
+    comingScreenId : Int?,
     viewModel: DetailScreenViewModel = hiltViewModel(),
     onBackClick: () -> Unit
 ) {
@@ -51,12 +54,19 @@ fun RecipeDetailScreen(
     val screenState = viewModel.screenState.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
-        viewModel.onEvent(DetailScreenEvent.OnGetRecipeById(recipeId))
+        viewModel.onEvent(DetailScreenEvent.OnGetRecipeById(recipeId, comingScreenId,isNetworkAvailable))
     }
+
 
     Scaffold(
         topBar = {
-            CustomTopBar(title = "Recipe Quest") {
+            CustomTopBar(
+                title = "Recipe Quest",
+                isFavorite = screenState.value.isFavorite,
+                onAddFavoriteClicked = {
+                    viewModel.onEvent(DetailScreenEvent.OnAddFavorite)
+                }
+            ) {
                 onBackClick()
             }
         }
@@ -128,7 +138,9 @@ fun RecipeDetailScreen(
                         CustomTabRow(
                             coroutineScope = coroutineScope,
                             ingredients = screenState.value.data!!.extendedIngredientModels,
-                            instructionSteps = screenState.value.data!!.analyzedInstructionModels[0].stepModels
+                            instructionSteps = if (screenState.value.data!!.analyzedInstructionModels.isNotEmpty()){
+                                screenState.value.data!!.analyzedInstructionModels[0].stepModels
+                            }else emptyList()
                         )
                     }
 

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -25,6 +26,8 @@ import androidx.compose.ui.unit.sp
 fun CustomTopBar(
     modifier: Modifier = Modifier,
     title: String,
+    isFavorite : Boolean,
+    onAddFavoriteClicked : () -> Unit,
     onBack: () -> Unit
 ) {
 
@@ -48,10 +51,12 @@ fun CustomTopBar(
             }
         },
         actions = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = {
+                onAddFavoriteClicked()
+            }) {
                 Icon(
-                    imageVector = Icons.Outlined.FavoriteBorder,
-                    contentDescription = "Arrow Back",
+                    imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                    contentDescription = "Favorite Icon",
                 )
             }
         }
