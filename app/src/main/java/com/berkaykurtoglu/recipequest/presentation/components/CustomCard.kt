@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
-import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,115 +29,101 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.berkaykurtoglu.recipequest.domain.model.recipesmodel.ResultModel
+import com.berkaykurtoglu.recipequest.domain.model.recipesmodel.RecipeModel
 
 @Composable
 fun CustomCard(
     modifier: Modifier = Modifier,
-    resultModel : ResultModel,
+    recipeModel : RecipeModel?,
     shape: RoundedCornerShape = RoundedCornerShape(20.dp),
     onClickFavorite: () -> Unit,
     onNavigateToDetail : (id : Int) -> Unit
 ) {
 
-    Box(
-        modifier = modifier.clickable {
-            onNavigateToDetail(
-                resultModel.id
-            )
-        }.fillMaxSize().aspectRatio(13f/9f)
-    ) {
-
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(resultModel.image)
-                .crossfade(true)
-                .build(),
-            contentDescription = "Recipe Image",
-            modifier = Modifier.fillMaxSize().clip(shape),
-            contentScale = ContentScale.Crop
-        )
+    recipeModel?.let {
 
         Box(
-            modifier= Modifier
-                .fillMaxSize()
-                .background(color = Color.Black.copy(0.5f), shape = shape),
-
-        ){
-
-            Row(
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .fillMaxWidth()
-                    .padding(25.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = resultModel.sourceName,
-                    color = Color.White,
-                    fontSize = 14.sp,
-                    modifier = Modifier,
-                    fontWeight = FontWeight.Normal
+            modifier = modifier.clickable {
+                onNavigateToDetail(
+                    recipeModel.id
                 )
+            }.fillMaxSize().aspectRatio(13f/9f)
+        ) {
 
-                Box(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clip(shape)
-                        .background(Color.White.copy(0.5f))
-                        .clickable {
-                            onClickFavorite()
-                        },
-                    contentAlignment = Alignment.Center
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(recipeModel.image)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = "Recipe Image",
+                modifier = Modifier.fillMaxSize().clip(shape),
+                contentScale = ContentScale.Crop
+            )
+
+            Box(
+                modifier= Modifier
+                    .fillMaxSize()
+                    .background(color = Color.Black.copy(0.5f), shape = shape),
+
                 ){
-                    Icon(
-                        imageVector = Icons.Rounded.FavoriteBorder,
-                        contentDescription = "",
-                        tint = Color.DarkGray,
-                        modifier = Modifier.padding()
-                    )
-                }
-            }
-
-            Column(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxWidth()
-                    .padding(25.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-
-                Text(
-                    text = resultModel.title,
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    modifier = Modifier,
-                    fontWeight = FontWeight.Bold,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1
-                )
 
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .fillMaxWidth()
+                        .padding(25.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.AccessTime,
-                        contentDescription = "Timer Icon",
-                        tint = Color.White,
-                        modifier = Modifier.size(23.dp)
-                    )
                     Text(
-                        text = resultModel.readyInMinutes.toString() + " Min",
+                        text = recipeModel.sourceName,
                         color = Color.White,
                         fontSize = 14.sp,
-                        modifier = Modifier
+                        modifier = Modifier,
+                        fontWeight = FontWeight.Normal
                     )
                 }
 
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth()
+                        .padding(25.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+
+                    Text(
+                        text = recipeModel.title,
+                        color = Color.White,
+                        fontSize = 16.sp,
+                        modifier = Modifier,
+                        fontWeight = FontWeight.Bold,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1
+                    )
+
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.AccessTime,
+                            contentDescription = "Timer Icon",
+                            tint = Color.White,
+                            modifier = Modifier.size(23.dp)
+                        )
+                        Text(
+                            text = recipeModel.readyInMinutes.toString() + " Min",
+                            color = Color.White,
+                            fontSize = 14.sp,
+                            modifier = Modifier
+                        )
+                    }
+
+                }
+
+
+
             }
-
-
 
         }
 

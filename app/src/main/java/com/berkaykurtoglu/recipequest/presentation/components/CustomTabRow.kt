@@ -81,24 +81,36 @@ fun CustomTabRow(
             ) {
                 when(page){
                     0 -> {
-                        ingredients.forEach {
-                            IngredientsView(extendedIngredientModel = it)
+                        if (ingredients.isNotEmpty()){
+                            ingredients.forEach {
+                                IngredientsView(extendedIngredientModel = it)
+                            }
+                        }else{
+                            Text(
+                                text = "No Ingredients Data Found"
+                            )
                         }
                     }
                     1 -> {
-                        instructionSteps.forEach {step->
-                            Text(
-                                text = buildAnnotatedString {
-                                    withStyle(
-                                        style = SpanStyle(
-                                            color = Color.Black,
-                                            fontWeight = FontWeight.Bold,
-                                        )
-                                    ){
-                                        append("${step.number} - ")
+                        if (instructionSteps.isNotEmpty()){
+                            instructionSteps.forEach {step->
+                                Text(
+                                    text = buildAnnotatedString {
+                                        withStyle(
+                                            style = SpanStyle(
+                                                color = Color.Black,
+                                                fontWeight = FontWeight.Bold,
+                                            )
+                                        ){
+                                            append("${step.number} - ")
+                                        }
+                                        append(step.step)
                                     }
-                                    append(step.step)
-                                }
+                                )
+                            }
+                        }else{
+                            Text(
+                                text = "No Instruction Data Found"
                             )
                         }
                     }
