@@ -1,5 +1,6 @@
 package com.berkaykurtoglu.recipequest.presentation.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -43,8 +44,8 @@ fun RecipeQuestNavGraph(
             HomeScreen(
                 coroutineScope = coroutineScope,
                 isNetworkAvailable = isNetworkAvailable,
-                onNavigateToDetail = {id->
-                    navAction.navigateToRecipeDetail(id)
+                onNavigateToDetail = {id,comingScreenId->
+                    navAction.navigateToRecipeDetail(id,comingScreenId)
                 },
                 onNavigateToFavorite = {
                     navAction.navigateToFavorites()
@@ -53,25 +54,35 @@ fun RecipeQuestNavGraph(
         }
 
         composable(
-            route = Screens.DetailScreen.route+"/{${ScreenArguments.DetailScreenRecipeId.argument}}",
+            route = Screens.DetailScreen.route+
+                    "/{${ScreenArguments.DetailScreenRecipeId.argument}}"+
+                    "/{${ScreenArguments.DetailScreenComingId.argument}}"
+            ,
             arguments = listOf(
                 navArgument(ScreenArguments.DetailScreenRecipeId.argument){
                     type = ScreenArguments.DetailScreenRecipeId.type
+                },
+                navArgument(ScreenArguments.DetailScreenComingId.argument){
+                    type = ScreenArguments.DetailScreenComingId.type
                 }
             )
         ){
             val recipeId = it.arguments?.getInt(ScreenArguments.DetailScreenRecipeId.argument)
+            val comingId = it.arguments?.getInt(ScreenArguments.DetailScreenComingId.argument)
             RecipeDetailScreen(
                 coroutineScope = coroutineScope,
                 isNetworkAvailable = isNetworkAvailable,
-                recipeId = recipeId
+                recipeId = recipeId,
+                comingScreenId = comingId
             ){
                 navController.navigateUp()
             }
         }
 
         composable(Screens.FavoriteScreen.route){
-            FavoritesScreen()
+            FavoritesScreen(){id,comingScreenId->
+                navAction.navigateToRecipeDetail(id,comingScreenId)
+            }
         }
 
 
