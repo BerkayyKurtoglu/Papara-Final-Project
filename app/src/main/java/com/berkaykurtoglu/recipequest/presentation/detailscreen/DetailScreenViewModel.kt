@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.berkaykurtoglu.recipequest.data.mapextension.toRecipeDetailEntity
 import com.berkaykurtoglu.recipequest.domain.model.recipedetailmodel.RecipeDetailModel
 import com.berkaykurtoglu.recipequest.domain.usecase.UseCase
+import com.berkaykurtoglu.recipequest.presentation.navigation.Screens
 import com.berkaykurtoglu.recipequest.util.ApiResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -25,11 +26,174 @@ class DetailScreenViewModel @Inject constructor(
     fun onEvent(event: DetailScreenEvent) {
         when(event){
             is DetailScreenEvent.OnAddFavorite -> {
-                TODO("Add Favorite in Cache")
+                handleOnFavorite()
             }
 
             is DetailScreenEvent.OnGetRecipeById -> {
-                getRecipeByIdFromNetwork(event.id)
+                if(event.isNetworkAvailable) getRecipeByIdFromNetwork(event.id)
+                else {
+                    handleOnOffline(event.id,event.comingScreenId)
+                }
+            }
+        }
+    }
+
+    private fun handleOnFavorite(){
+        if(!_screenState.value.isLoading && _screenState.value.errorMessage.isBlank()){
+            if(!_screenState.value.isFavorite) saveRecipeToFavorite()
+            else deleteRecipeFromFavorite()
+        }
+    }
+
+    private fun handleOnOffline(
+        recipeId : Int?,
+        screenId : Int?
+    ){
+
+        if (recipeId != null && screenId != null){
+            if (screenId == 1){
+                //Coming From Home
+                getRecipeFromCache(recipeId)
+            }else{
+                // coming favorite
+                getRecipeFromFavorite(recipeId)
+            }
+        }else{
+            _screenState.value = _screenState.value.copy(
+                errorMessage = "Something went wrong",
+                isLoading = false,
+                data = null
+            )
+        }
+    }
+
+    private fun deleteRecipeFromFavorite(){
+        viewModelScope.launch {
+            val id = async { useCase.deleteRecipeFromFavoriteUseCase(_screenState.value.data!!.id) }.await()
+            if (id > 0) {
+                _screenState.update {
+                    it.copy(
+                        isFavorite = false
+                    )
+                }
+            }
+        }
+    }
+
+    private fun getRecipeFromFavorite(
+        id : Int
+    ){
+
+        viewModelScope.launch {
+            useCase.getRecipeByIdFromFavoriteUseCase(id).collect{result->
+                when(result){
+                    is ApiResult.Error -> {
+                        _screenState.update {
+                            it.copy(
+                                errorMessage = result.message,
+                                isLoading = false,
+                                data = null
+                            )
+                        }
+                    }
+                    ApiResult.Loading -> {
+                        _screenState.update {
+                            it.copy(
+                                isLoading = true,
+                                errorMessage = "",
+                                data = null
+                            )
+                        }
+                    }
+                    is ApiResult.Success -> {
+                        _screenState.update {
+                            it.copy(
+                                data = result.data.toRecipeDetailModel(),
+                                isLoading = false,
+                                errorMessage = "",
+                                isFavorite = true
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    private fun getRecipeFromCache(
+        id : Int
+    ){
+        id.let {
+            viewModelScope.launch {
+                useCase.getRecipeByIdFromFavoriteUseCase(id).collect{result->
+                    when(result) {
+                        is ApiResult.Success -> {
+                            if (result.data == null) {
+                                _screenState.update {
+                                    it.copy(
+                                        isFavorite = false
+                                    )
+                                }
+                            }else {
+                                _screenState.update {
+                                    it.copy(
+                                        isFavorite = true
+                                    )
+                                }
+                            }
+                        }
+                        else -> {}
+                    }
+                }
+                useCase.getRecipeByIdFromCacheUseCase(id).collect{result->
+                    when(result){
+                        is ApiResult.Error -> {
+                            _screenState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    errorMessage = it.errorMessage,
+                                    data = null)
+                            }
+                        }
+
+                        ApiResult.Loading -> {
+                            _screenState.update {
+                                it.copy(
+                                    isLoading = true,
+                                    errorMessage = "",
+                                    data = null
+                                )
+                            }
+                        }
+
+                        is ApiResult.Success -> {
+                            _screenState.update {
+                                it.copy(
+                                    data = result.data.toRecipeDetailModel(),
+                                    isLoading = false,
+                                    errorMessage = ""
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun saveRecipeToFavorite(){
+
+        viewModelScope.launch {
+            if(!_screenState.value.isLoading && _screenState.value.errorMessage.isBlank()){
+                val id =  async { useCase.insertRecipeToFavoriteUseCase(_screenState.value.data!!.toRecipeDetailEntity()) }.await()
+                if (id != -1L) {
+                    _screenState.update {
+                        it.copy(
+                            isFavorite = true
+                        )
+                    }
+                }
             }
         }
     }
