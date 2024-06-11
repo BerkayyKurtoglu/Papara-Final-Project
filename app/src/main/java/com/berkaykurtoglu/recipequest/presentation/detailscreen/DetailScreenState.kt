@@ -5,5 +5,6 @@ import com.berkaykurtoglu.recipequest.domain.model.recipedetailmodel.RecipeDetai
 data class DetailScreenState(
     val isLoading : Boolean = true,
     val errorMessage : String = "",
-    val data : RecipeDetailModel? = null
+    val data : RecipeDetailModel? = null,
+    val isFavorite : Boolean = false
 )
