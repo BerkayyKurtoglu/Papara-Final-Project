@@ -7,7 +7,9 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.BackoffPolicy
 import androidx.work.Configuration
+import androidx.work.Constraints
 import androidx.work.ListenableWorker
+import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
@@ -29,6 +31,11 @@ class RecipeQuestApplication : Application(), Configuration.Provider{
     @Inject
     lateinit var workManager: WorkManager
 
+    private val constraints = Constraints.Builder()
+        .setRequiredNetworkType(NetworkType.CONNECTED) // Requires internet connection
+        .setRequiresCharging(true) // Requires the phone to be charging
+        .build()
+
     private val oneTime = PeriodicWorkRequestBuilder<SuggestRecipeWorker>(
         repeatInterval = 1,TimeUnit.DAYS
     )
@@ -38,6 +45,7 @@ class RecipeQuestApplication : Application(), Configuration.Provider{
             backoffDelay = 10L,
             timeUnit = TimeUnit.SECONDS
         )
+        .setConstraints(constraints)
         .build()
 
     override val workManagerConfiguration: Configuration
