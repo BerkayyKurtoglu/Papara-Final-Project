@@ -10,7 +10,7 @@ class GetRecipeByIdFromCacheUseCase @Inject constructor(
     private val detailScreenRepository: DetailScreenRepository
 ) {
 
-    suspend operator fun invoke(id : Int) : Flow<ApiResult<RecipeDetailEntity>>
+    suspend operator fun invoke(id : Int) : Flow<ApiResult<RecipeDetailEntity?>>
      = detailScreenRepository.getRecipeByIdFromCache(id)
 
 }
