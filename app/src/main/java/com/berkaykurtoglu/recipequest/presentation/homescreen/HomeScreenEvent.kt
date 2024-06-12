@@ -6,6 +6,7 @@ sealed class HomeScreenEvent {
 
     data class OnFetchRecipes(val isConnected : Boolean) : HomeScreenEvent()
     data class OnFilter(val filter : FilterCategorie) : HomeScreenEvent()
-    data class OnSearchRecipes(val query : String, val isNetworkAvailable : Boolean) : HomeScreenEvent()
+    data class OnSearchRecipes(val query : String) : HomeScreenEvent()
+    data object RefreshThePage : HomeScreenEvent()
 
 }
