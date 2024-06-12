@@ -1,10 +1,9 @@
 package com.berkaykurtoglu.recipequest.data.repository
 
-import com.berkaykurtoglu.recipequest.data.source.local.entity.LocalRecipeResponse
 import com.berkaykurtoglu.recipequest.data.source.local.entity.RecipeDetailEntity
 import com.berkaykurtoglu.recipequest.data.source.local.favoritesdatabase.FavoritesDao
 import com.berkaykurtoglu.recipequest.domain.repository.FavoriteScreenRepository
-import com.berkaykurtoglu.recipequest.util.ApiResult
+import com.berkaykurtoglu.recipequest.util.SourceResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -14,13 +13,13 @@ class FavoriteScreenRepositoryImpl @Inject constructor(
 ) : FavoriteScreenRepository {
 
 
-    override suspend fun getAllFavoriteRecipes(): Flow<ApiResult<List<RecipeDetailEntity>>> =
+    override suspend fun getAllFavoriteRecipes(): Flow<SourceResult<List<RecipeDetailEntity>>> =
         flow {
-            emit(ApiResult.Loading)
+            emit(SourceResult.Loading)
             try {
-                emit(ApiResult.Success(favoriteDataSource.getFavorites()))
+                emit(SourceResult.Success(favoriteDataSource.getFavorites()))
             }catch (e : Exception){
-                emit(ApiResult.Error(e.localizedMessage ?:" Unexpected Error"))
+                emit(SourceResult.Error(e.localizedMessage ?:" Unexpected Error"))
             }
         }
 

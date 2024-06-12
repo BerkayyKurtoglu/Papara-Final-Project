@@ -6,8 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.berkaykurtoglu.recipequest.data.mapextension.toRecipeDetailEntity
 import com.berkaykurtoglu.recipequest.domain.model.recipedetailmodel.RecipeDetailModel
 import com.berkaykurtoglu.recipequest.domain.usecase.UseCase
-import com.berkaykurtoglu.recipequest.presentation.navigation.Screens
-import com.berkaykurtoglu.recipequest.util.ApiResult
+import com.berkaykurtoglu.recipequest.util.SourceResult
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -17,7 +16,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel(
     assistedFactory = DetailScreenViewModel.Factory::class
@@ -104,7 +102,7 @@ class DetailScreenViewModel @AssistedInject constructor(
         viewModelScope.launch {
             useCase.getRecipeByIdFromFavoriteUseCase(id).collect{result->
                 when(result){
-                    is ApiResult.Error -> {
+                    is SourceResult.Error -> {
                         _screenState.update {
                             it.copy(
                                 errorMessage = result.message,
@@ -114,7 +112,7 @@ class DetailScreenViewModel @AssistedInject constructor(
                             )
                         }
                     }
-                    ApiResult.Loading -> {
+                    SourceResult.Loading -> {
                         _screenState.update {
                             it.copy(
                                 isLoading = true,
@@ -123,7 +121,7 @@ class DetailScreenViewModel @AssistedInject constructor(
                             )
                         }
                     }
-                    is ApiResult.Success -> {
+                    is SourceResult.Success -> {
                         _screenState.update {
                             it.copy(
                                 data = result.data.toRecipeDetailModel(),
@@ -146,7 +144,7 @@ class DetailScreenViewModel @AssistedInject constructor(
             viewModelScope.launch {
                 useCase.getRecipeByIdFromFavoriteUseCase(id).collect{result->
                     when(result) {
-                        is ApiResult.Success -> {
+                        is SourceResult.Success -> {
                             if (result.data != null) {
                                 _screenState.update {
                                     it.copy(
@@ -160,7 +158,7 @@ class DetailScreenViewModel @AssistedInject constructor(
                 }
                 useCase.getRecipeByIdFromCacheUseCase(id).collect{result->
                     when(result){
-                        is ApiResult.Error -> {
+                        is SourceResult.Error -> {
                             _screenState.update {
                                 it.copy(
                                     isLoading = false,
@@ -169,7 +167,7 @@ class DetailScreenViewModel @AssistedInject constructor(
                             }
                         }
 
-                        ApiResult.Loading -> {
+                        SourceResult.Loading -> {
                             _screenState.update {
                                 it.copy(
                                     isLoading = true,
@@ -179,7 +177,7 @@ class DetailScreenViewModel @AssistedInject constructor(
                             }
                         }
 
-                        is ApiResult.Success -> {
+                        is SourceResult.Success -> {
                             result.data?.let {
                                 _screenState.update {
                                     it.copy(
@@ -241,7 +239,7 @@ class DetailScreenViewModel @AssistedInject constructor(
             viewModelScope.launch {
                 useCase.getRecipeByIdFromFavoriteUseCase(id).collect{
                     when(it){
-                        is ApiResult.Success ->{
+                        is SourceResult.Success ->{
                             if (it.data != null)
                             _screenState.update {
                                 it.copy(
@@ -255,7 +253,7 @@ class DetailScreenViewModel @AssistedInject constructor(
                 useCase.getRecipeByIdFromNetworkUseCase(id).collect{ apiResult->
 
                     when(apiResult){
-                        is ApiResult.Error -> {
+                        is SourceResult.Error -> {
                             _screenState.update {
                                 it.copy(
                                     errorMessage = apiResult.message,
@@ -264,7 +262,7 @@ class DetailScreenViewModel @AssistedInject constructor(
                                 )
                             }
                         }
-                        ApiResult.Loading -> {
+                        SourceResult.Loading -> {
                             _screenState.update {
                                 it.copy(
                                     isLoading = true,
@@ -273,7 +271,7 @@ class DetailScreenViewModel @AssistedInject constructor(
                                 )
                             }
                         }
-                        is ApiResult.Success -> {
+                        is SourceResult.Success -> {
                             _screenState.update {
                                 it.copy(
                                     data = apiResult.data.toRecipeDetailModel(),

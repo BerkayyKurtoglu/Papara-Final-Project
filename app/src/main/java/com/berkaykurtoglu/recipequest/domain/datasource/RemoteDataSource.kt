@@ -4,14 +4,14 @@ import com.berkaykurtoglu.recipequest.data.source.remote.dto.allrecipesdto.Recip
 import com.berkaykurtoglu.recipequest.data.source.remote.dto.searchdto.RecipeSearchDto
 import com.berkaykurtoglu.recipequest.data.source.remote.dto.similarrecipedto.RecipeSimilarDto
 import com.berkaykurtoglu.recipequest.data.source.remote.dto.specificdto.RecipeDetailDto
-import com.berkaykurtoglu.recipequest.util.ApiResult
+import com.berkaykurtoglu.recipequest.util.SourceResult
 import kotlinx.coroutines.flow.Flow
 
 interface RemoteDataSource {
 
     fun getRecipeById(
         id : Int
-    ) : Flow<ApiResult<RecipeDetailDto>>
+    ) : Flow<SourceResult<RecipeDetailDto>>
 
     suspend fun getRecipesRandomly(
         offset: Int,
@@ -21,7 +21,7 @@ interface RemoteDataSource {
 
     suspend fun searchRecipes(
         query : String
-    ) : Flow<ApiResult<RecipeSearchDto>>
+    ) : Flow<SourceResult<RecipeSearchDto>>
 
     suspend fun suggestSimilarRecipe(
         id : Int

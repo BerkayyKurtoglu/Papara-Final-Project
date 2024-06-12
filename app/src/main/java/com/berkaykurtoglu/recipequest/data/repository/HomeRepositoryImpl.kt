@@ -5,16 +5,13 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.berkaykurtoglu.recipequest.data.source.local.cachedatabase.CacheDao
-import com.berkaykurtoglu.recipequest.data.source.local.entity.LocalRecipeResponse
 import com.berkaykurtoglu.recipequest.data.source.local.entity.RecipeDetailEntity
 import com.berkaykurtoglu.recipequest.data.source.remote.RecipesPagingSource
-import com.berkaykurtoglu.recipequest.data.source.remote.dto.allrecipesdto.RecipeResponseDto
 import com.berkaykurtoglu.recipequest.data.source.remote.dto.searchdto.RecipeSearchDto
 import com.berkaykurtoglu.recipequest.domain.datasource.RemoteDataSource
-import com.berkaykurtoglu.recipequest.domain.model.recipesearchmodel.RecipeSearchModel
 import com.berkaykurtoglu.recipequest.domain.model.recipesmodel.RecipeModel
 import com.berkaykurtoglu.recipequest.domain.repository.HomeRepository
-import com.berkaykurtoglu.recipequest.util.ApiResult
+import com.berkaykurtoglu.recipequest.util.SourceResult
 import com.berkaykurtoglu.recipequest.util.apiFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -43,10 +40,10 @@ class HomeRepositoryImpl @Inject constructor (
             pagingSourceFactory = { RecipesPagingSource(type,remoteDataSource) }
         ).flow
 
-    override suspend fun searchRecipesFromNetwork(query: String): Flow<ApiResult<RecipeSearchDto>> =
+    override suspend fun searchRecipesFromNetwork(query: String): Flow<SourceResult<RecipeSearchDto>> =
         remoteDataSource.searchRecipes(query)
 
-    override suspend fun searchRecipesFromCache(query: String): Flow<ApiResult<List<RecipeDetailEntity>>> =
+    override suspend fun searchRecipesFromCache(query: String): Flow<SourceResult<List<RecipeDetailEntity>>> =
         apiFlow {
             cacheDataSource.cacheSearchRecipes(query)
         }

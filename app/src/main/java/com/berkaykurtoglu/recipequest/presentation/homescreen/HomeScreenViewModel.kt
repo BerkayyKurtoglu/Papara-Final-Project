@@ -7,7 +7,7 @@ import androidx.paging.cachedIn
 import com.berkaykurtoglu.recipequest.domain.model.recipesmodel.RecipeModel
 import com.berkaykurtoglu.recipequest.domain.repository.HomeRepository
 import com.berkaykurtoglu.recipequest.domain.usecase.UseCase
-import com.berkaykurtoglu.recipequest.util.ApiResult
+import com.berkaykurtoglu.recipequest.util.SourceResult
 import com.berkaykurtoglu.recipequest.util.FilterCategorie
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -64,19 +64,19 @@ class HomeScreenViewModel @Inject constructor(
         viewModelScope.launch {
             useCase.searchRecipeFromCacheUseCase(query).collect{result->
                 when(result) {
-                    is ApiResult.Error -> {
+                    is SourceResult.Error -> {
                         _screenState.value = _screenState.value.copy(
                             searchIsLoading = false,
                             searchErrorMessage = result.message
                         )
                     }
-                    ApiResult.Loading -> {
+                    SourceResult.Loading -> {
                         _screenState.value = _screenState.value.copy(
                             searchIsLoading = true,
                             searchErrorMessage = ""
                         )
                     }
-                    is ApiResult.Success -> {
+                    is SourceResult.Success -> {
                         _screenState.value = _screenState.value.copy(
                             searchIsLoading = false,
                             searchRecipesResult = result.data.map { it.toRecipeSearchModel() }
@@ -107,19 +107,19 @@ class HomeScreenViewModel @Inject constructor(
         viewModelScope.launch {
             useCase.searchRecipesFromNetworkUseCase(query).collect{result->
                 when(result){
-                    is ApiResult.Error -> {
+                    is SourceResult.Error -> {
                         _screenState.value = _screenState.value.copy(
                             searchIsLoading = false,
                             searchErrorMessage = result.message
                         )
                     }
-                    ApiResult.Loading -> {
+                    SourceResult.Loading -> {
                         _screenState.value = _screenState.value.copy(
                             searchIsLoading = true,
                             searchErrorMessage = ""
                         )
                     }
-                    is ApiResult.Success -> {
+                    is SourceResult.Success -> {
                         _screenState.value = _screenState.value.copy(
                             searchIsLoading = false,
                             searchRecipesResult = result.data.toRecipeSearchModelList()
