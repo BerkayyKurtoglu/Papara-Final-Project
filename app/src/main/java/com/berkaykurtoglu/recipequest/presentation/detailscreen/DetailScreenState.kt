@@ -6,5 +6,6 @@ data class DetailScreenState(
     val isLoading : Boolean = true,
     val errorMessage : String = "",
     val data : RecipeDetailModel? = null,
-    val isFavorite : Boolean = false
+    val isFavorite : Boolean = false,
+    val isNetworkConnected : Boolean = false,
 )
