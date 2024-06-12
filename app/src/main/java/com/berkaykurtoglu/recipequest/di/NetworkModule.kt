@@ -3,9 +3,7 @@ package com.berkaykurtoglu.recipequest.di
 import android.content.Context
 import android.net.ConnectivityManager
 import com.berkaykurtoglu.recipequest.data.source.remote.RecipeApiService
-import com.berkaykurtoglu.recipequest.data.source.remote.RemoteDataSourceImpl
-import com.berkaykurtoglu.recipequest.domain.datasource.RemoteDataSource
-import com.berkaykurtoglu.recipequest.util.Contants
+import com.berkaykurtoglu.recipequest.util.Constants
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import dagger.Module
 import dagger.Provides
@@ -32,7 +30,7 @@ object NetworkModule {
     fun provideRecipeRetrofit(
         @ApplicationContext context: Context
     ) : Retrofit = Retrofit.Builder()
-        .baseUrl(Contants.BASE_URL)
+        .baseUrl(Constants.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .client(OkHttpClient.Builder().addInterceptor(ChuckerInterceptor(context)).build())
         .build()
