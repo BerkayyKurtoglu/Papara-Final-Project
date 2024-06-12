@@ -41,15 +41,6 @@ class HomeRepositoryImpl @Inject constructor (
             }
         }
 
-    override suspend fun updateCache(localRecipeResponse: List<LocalRecipeResponse>) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun deleteAllCache(): Int {
-        TODO("Not yet implemented")
-    }
-
-
     override suspend fun getAllRecipesNetwork(
         type : String
     ): Flow<PagingData<RecipeModel>> =

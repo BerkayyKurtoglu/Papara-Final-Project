@@ -19,12 +19,6 @@ interface HomeRepository {
 
     suspend fun getAllRecipesFromCache() : Flow<PagingData<RecipeModel>>
 
-    suspend fun updateCache(
-        localRecipeResponse : List<LocalRecipeResponse>
-    )
-
-    suspend fun deleteAllCache() : Int
-
     suspend fun getAllRecipesNetwork(
         type : String
     ) : Flow<PagingData<RecipeModel>>
