@@ -134,13 +134,12 @@ class HomeScreenViewModel @Inject constructor(
         mealType: FilterCategorie
     ){
         viewModelScope.launch {
-            homeRepository.getAllRecipesNetwork(
+            useCase.getAllRecipesFromNetworkUseCase(
                 when(mealType){
                     is FilterCategorie.Random -> ""
                     else -> mealType.category
                 }
-            )
-                .distinctUntilChanged()
+            ).distinctUntilChanged()
                 .cachedIn(viewModelScope)
                 .collect{
                     screenPagingState.value = it
