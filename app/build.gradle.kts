@@ -129,7 +129,7 @@ dependencies {
     implementation ("androidx.work:work-runtime-ktx:2.9.0")
     implementation ("androidx.hilt:hilt-work:1.2.0")
 
-
+    implementation ("androidx.activity:activity-ktx:1.9.0")
 
 
 
