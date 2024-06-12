@@ -20,7 +20,7 @@ class RecipesPagingSource(
         return try{
             val currentPage = params.key ?: 0
             val currentOffset = currentPage*PAGE_SIZE
-            val data = remoteDataSource.getRecipesRandomlyNew(
+            val data = remoteDataSource.getRecipesRandomly(
                 offset = currentOffset,
                 number = PAGE_SIZE,
                 mealType
