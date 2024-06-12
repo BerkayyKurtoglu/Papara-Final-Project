@@ -38,7 +38,7 @@ class DetailScreenRepositoryImpl @Inject constructor(
     override suspend fun deleteRecipeFromFavorites(id: Int): Int =
         favoritesDataSource.deleteRecipeFromFavorites(id)
 
-    override suspend fun getRecipeByIdFromCache(id: Int): Flow<ApiResult<RecipeDetailEntity>> =
+    override suspend fun getRecipeByIdFromCache(id: Int): Flow<ApiResult<RecipeDetailEntity?>> =
         apiFlow {
             cacheDataSource.cacheGetRecipeById(id)
         }

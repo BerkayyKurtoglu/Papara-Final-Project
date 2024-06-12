@@ -26,7 +26,7 @@ interface DetailScreenRepository {
 
     suspend fun deleteRecipeFromFavorites(id : Int) : Int
 
-    suspend fun getRecipeByIdFromCache(id : Int) : Flow<ApiResult<RecipeDetailEntity>>
+    suspend fun getRecipeByIdFromCache(id : Int) : Flow<ApiResult<RecipeDetailEntity?>>
 
     suspend fun getRecipeByIdFromFavorite(id : Int) : Flow<ApiResult<RecipeDetailEntity>>
 
