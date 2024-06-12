@@ -36,7 +36,6 @@ fun CustomCard(
     modifier: Modifier = Modifier,
     recipeModel : RecipeModel?,
     shape: RoundedCornerShape = RoundedCornerShape(20.dp),
-    onClickFavorite: () -> Unit,
     onNavigateToDetail : (id : Int) -> Unit
 ) {
 

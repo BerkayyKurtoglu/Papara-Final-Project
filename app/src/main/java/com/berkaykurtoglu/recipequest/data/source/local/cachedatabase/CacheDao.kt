@@ -14,7 +14,7 @@ interface CacheDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecipe(recipe : RecipeDetailEntity)
 
-    @Query("SELECT * FROM recipe_entity")
+    @Query("SELECT * FROM recipe_entity ORDER BY addedDate ASC")
     fun cacheGetAllRecipes() : PagingSource<Int, RecipeDetailEntity>
 
     @Query("DELETE FROM recipe_entity")
@@ -30,8 +30,10 @@ interface CacheDao {
     suspend fun cacheDeleteRecipeFromCache(id : Int) : Int
 
     @Query("SELECT * FROM recipe_entity WHERE id = :id")
-    suspend fun cacheGetRecipeById(id : Int) : RecipeDetailEntity
+    suspend fun cacheGetRecipeById(id : Int) : RecipeDetailEntity?
 
+    @Query("SELECT * FROM recipe_entity WHERE title LIKE '%' || :query || '%'")
+    suspend fun cacheSearchRecipes(query : String) : List<RecipeDetailEntity>
 
 
 }
