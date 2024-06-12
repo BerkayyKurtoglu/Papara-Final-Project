@@ -1,5 +1,6 @@
 package com.berkaykurtoglu.recipequest.presentation.detailscreen
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.berkaykurtoglu.recipequest.data.mapextension.toRecipeDetailEntity
@@ -7,6 +8,9 @@ import com.berkaykurtoglu.recipequest.domain.model.recipedetailmodel.RecipeDetai
 import com.berkaykurtoglu.recipequest.domain.usecase.UseCase
 import com.berkaykurtoglu.recipequest.presentation.navigation.Screens
 import com.berkaykurtoglu.recipequest.util.ApiResult
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,28 +19,41 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class DetailScreenViewModel @Inject constructor(
-    private val useCase : UseCase
+@HiltViewModel(
+    assistedFactory = DetailScreenViewModel.Factory::class
+)
+class DetailScreenViewModel @AssistedInject constructor(
+    private val useCase : UseCase,
+    @Assisted("recipeId") private val recipeId : Int?,
+    @Assisted("comingScreenId") private val comingScreenId : Int?
 ) : ViewModel() {
 
     private val _screenState = MutableStateFlow(DetailScreenState())
     val screenState = _screenState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            useCase.checkNetworkUseCase().collect{connected->
+                Log.d("DetailScreenViewModel", "checkNetwork: $connected")
+                _screenState.update {
+                    it.copy(
+                        isNetworkConnected = connected
+                    )
+                }
+                if(connected) getRecipeByIdFromNetwork(recipeId)
+                else handleOnOffline(recipeId,comingScreenId)
+            }
+        }
+    }
 
     fun onEvent(event: DetailScreenEvent) {
         when(event){
             is DetailScreenEvent.OnAddFavorite -> {
                 handleOnFavorite()
             }
-
-            is DetailScreenEvent.OnGetRecipeById -> {
-                if(event.isNetworkAvailable) getRecipeByIdFromNetwork(event.id)
-                else {
-                    handleOnOffline(event.id,event.comingScreenId)
-                }
-            }
         }
     }
+
 
     private fun handleOnFavorite(){
         if(!_screenState.value.isLoading && _screenState.value.errorMessage.isBlank()){
@@ -92,7 +109,8 @@ class DetailScreenViewModel @Inject constructor(
                             it.copy(
                                 errorMessage = result.message,
                                 isLoading = false,
-                                data = null
+                                data = null,
+                                isFavorite = true
                             )
                         }
                     }
@@ -129,16 +147,10 @@ class DetailScreenViewModel @Inject constructor(
                 useCase.getRecipeByIdFromFavoriteUseCase(id).collect{result->
                     when(result) {
                         is ApiResult.Success -> {
-                            if (result.data == null) {
+                            if (result.data != null) {
                                 _screenState.update {
                                     it.copy(
                                         isFavorite = false
-                                    )
-                                }
-                            }else {
-                                _screenState.update {
-                                    it.copy(
-                                        isFavorite = true
                                     )
                                 }
                             }
@@ -168,12 +180,14 @@ class DetailScreenViewModel @Inject constructor(
                         }
 
                         is ApiResult.Success -> {
-                            _screenState.update {
-                                it.copy(
-                                    data = result.data.toRecipeDetailModel(),
-                                    isLoading = false,
-                                    errorMessage = ""
-                                )
+                            result.data?.let {
+                                _screenState.update {
+                                    it.copy(
+                                        data = result.data.toRecipeDetailModel(),
+                                        isLoading = false,
+                                        errorMessage = ""
+                                    )
+                                }
                             }
                         }
                     }
@@ -225,6 +239,19 @@ class DetailScreenViewModel @Inject constructor(
     ) {
         id?.let {
             viewModelScope.launch {
+                useCase.getRecipeByIdFromFavoriteUseCase(id).collect{
+                    when(it){
+                        is ApiResult.Success ->{
+                            if (it.data != null)
+                            _screenState.update {
+                                it.copy(
+                                    isFavorite = true
+                                )
+                            }
+                        }
+                        else ->{}
+                    }
+                }
                 useCase.getRecipeByIdFromNetworkUseCase(id).collect{ apiResult->
 
                     when(apiResult){
@@ -269,6 +296,12 @@ class DetailScreenViewModel @Inject constructor(
         }
     }
 
-
+    @AssistedFactory
+    interface Factory{
+        fun create(
+            @Assisted("recipeId") recipeId : Int?,
+            @Assisted( "comingScreenId") comingScreenId : Int?
+        ) : DetailScreenViewModel
+    }
 
 }
