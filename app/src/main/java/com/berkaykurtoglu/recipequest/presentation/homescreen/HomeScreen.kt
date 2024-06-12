@@ -1,7 +1,10 @@
 package com.berkaykurtoglu.recipequest.presentation.homescreen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -10,45 +13,46 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.berkaykurtoglu.recipequest.R
+import com.berkaykurtoglu.recipequest.domain.model.recipesmodel.RecipeModel
 import com.berkaykurtoglu.recipequest.presentation.components.CustomCard
 import com.berkaykurtoglu.recipequest.presentation.components.CustomSearchBar
 import com.berkaykurtoglu.recipequest.presentation.components.FilterChips
-import com.berkaykurtoglu.recipequest.presentation.components.NotConnectedBar
+import com.berkaykurtoglu.recipequest.presentation.components.SearchBarItem
+import com.berkaykurtoglu.recipequest.presentation.navigation.Screens
 import com.berkaykurtoglu.recipequest.util.FilterCategorie
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     coroutineScope: CoroutineScope,
-    isNetworkAvailable: Boolean,
     homeScreenViewModel: HomeScreenViewModel = hiltViewModel(),
-    onNavigateToDetail : (id : Int) -> Unit
+    onNavigateToDetail : (id : Int, comingScreenId : Int) -> Unit,
+    onNavigateToFavorite : () -> Unit
 ) {
 
     val searchText = remember {
@@ -59,110 +63,136 @@ fun HomeScreen(
     }
     val filterList = mutableListOf(
         FilterCategorie.Random,
-        FilterCategorie.DairyFree,
-        FilterCategorie.GlutenFree,
-        FilterCategorie.Vegetarian,
+        FilterCategorie.BreakFast,
+        FilterCategorie.MainCourse,
+        FilterCategorie.SideDish,
+        FilterCategorie.Dessert,
+        FilterCategorie.Drink,
+        FilterCategorie.Snack,
     )
     val lazyListState = rememberLazyListState()
 
     val screenState = homeScreenViewModel.screenState.collectAsState()
 
-
-
-    LaunchedEffect(key1 = Unit) {
-        if (screenState.value.firstCall){
-            homeScreenViewModel.onEvent(HomeScreenEvent.OnFetchRecipes(isNetworkAvailable, offset = 0))
-        }else{
-            //homeScreenViewModel.onEvent(HomeScreenEvent.OnFilter(screenState.value.chipIndex))
-        }
-    }
-
+    val lazyPagingItems : LazyPagingItems<RecipeModel> = homeScreenViewModel.screenPagingState.collectAsLazyPagingItems()
 
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(),
+        Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Top
     ) {
-        if (screenState.value.isLoading){
-            CircularProgressIndicator()
-        }else if(screenState.value.errorMessage.isNotBlank()){
-            Text(text = screenState.value.errorMessage)
-        }else if(screenState.value.recipes.resultModels?.isEmpty() == true){
-            FilledTonalButton(onClick = {
-                homeScreenViewModel.onEvent(HomeScreenEvent.OnFetchRecipes(isNetworkAvailable, offset = 10))
-            }) {
-                Text(text = "We could not find any recipes :(")
+
+        CustomSearchBar(
+            active = searchIsActive,
+            text = searchText,
+            onSearch = {
+                homeScreenViewModel.onEvent(HomeScreenEvent.OnSearchRecipes(it))
+            },
+            onFavoriteClicked = {
+                onNavigateToFavorite()
             }
-        }else{
-
-            CustomSearchBar(
-                active = searchIsActive,
-                text = searchText,
-                onSearch = {
-
-                }
-            ){
-
-
-            }
-            if (isNetworkAvailable) NotConnectedBar(modifier = Modifier.width(250.dp))
-            Spacer(modifier = Modifier.height(12.dp))
-
-            FilterChips(
-                filterList = if (false){
-                    filterList.add(FilterCategorie.BreakFast)
-                    filterList.add(FilterCategorie.Lunch)
-                    filterList.add(FilterCategorie.Dinner)
-                    filterList } else {filterList},
-                selectedItem = screenState.value.chipIndex) {
-                homeScreenViewModel.onEvent(HomeScreenEvent.OnFilter(it))
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(18.dp),
-                modifier = Modifier.weight(1f),
-                contentPadding = PaddingValues(horizontal = 25.dp),
-                state = lazyListState,
-                horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            Column(
+                Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                screenState.value.recipes.resultModels?.let {resultModelList->
-                    items(
-                        resultModelList,
-                        key = {
-                            it.id
-                        }
-                    ){
-                        CustomCard(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .aspectRatio(13f / 9f)
-                                .animateItemPlacement(),
-                            resultModel = it,
-                            onClickFavorite = {}
-                        ){id->
-                            onNavigateToDetail(id)
-                        }
-                    }
-                    if (false){
-                        item{
-                            IconButton(onClick = {
-                                val oldOffset = screenState.value.recipes.offset
-                                oldOffset?.let {
-                                    homeScreenViewModel.onEvent(HomeScreenEvent.OnFetchRecipes(true, offset = it + 10))
-                                }
-
-                            }) {
-                                Icon(imageVector = Icons.Default.Add, contentDescription = "")
+                if (screenState.value.searchIsLoading) CircularProgressIndicator()
+                else if (screenState.value.searchErrorMessage.isNotBlank()){
+                    Text(text = screenState.value.searchErrorMessage)
+                }else{
+                    LazyColumn(
+                        contentPadding = PaddingValues(20.dp),
+                        verticalArrangement = Arrangement.spacedBy(17.dp)
+                    ) {
+                        items(screenState.value.searchRecipesResult){
+                            SearchBarItem(
+                                modifier = Modifier.fillMaxWidth(),
+                                recipe = it
+                            ){id->
+                                onNavigateToDetail(id,Screens.HomeScreen.id)
                             }
                         }
                     }
                 }
             }
+
         }
+
+        if (screenState.value.isNetworkConnected){
+            FilterChips(
+                filterList = filterList,
+                selectedItem = screenState.value.chipIndex
+            ) {
+                homeScreenViewModel.onEvent(HomeScreenEvent.OnFilter(it))
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+
+        Box(
+            Modifier.weight(1f).fillMaxWidth()
+        ) {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(18.dp),
+                contentPadding = PaddingValues(horizontal = 25.dp),
+                state = lazyListState,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+            ) {
+                items(lazyPagingItems.itemCount){
+                    CustomCard(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(13f / 9f)
+                            .animateItemPlacement(),
+                        recipeModel = lazyPagingItems[it]
+                    ){id->
+                        onNavigateToDetail(id,Screens.HomeScreen.id)
+                    }
+                }
+                lazyPagingItems.apply {
+                    when{
+                        loadState.refresh is LoadState.Loading ->{
+                            item{
+                                CircularProgressIndicator()
+                            }
+                        }
+                        loadState.refresh is LoadState.Error ->{
+                            item{
+                                Text(text = (loadState.refresh as LoadState.Error).error.message.toString(),Modifier.fillMaxSize())
+                            }
+                        }
+                        loadState.append is LoadState.Loading ->{
+                            item{
+                                CircularProgressIndicator()
+                            }
+                        }
+                        loadState.append is LoadState.Error ->{
+                            item{
+                                Text(text = (loadState.append as LoadState.Error).error.message.toString())
+                            }
+                        }
+                    }
+                }
+            }
+            IconButton(onClick = {
+                homeScreenViewModel.onEvent(HomeScreenEvent.RefreshThePage)
+            },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(20.dp)
+                    .border(0.5.dp, color = Color.Gray, shape = CircleShape)
+                    .background(Color.Black.copy(0.7f), CircleShape)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.die),
+                    contentDescription = "",
+                    modifier = Modifier.padding(5.dp),
+                    tint = Color.White
+                )
+            }
+
+        }
+
     }
 
 
