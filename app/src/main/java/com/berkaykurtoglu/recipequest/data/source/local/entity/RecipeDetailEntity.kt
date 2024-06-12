@@ -3,6 +3,7 @@ package com.berkaykurtoglu.recipequest.data.source.local.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.berkaykurtoglu.recipequest.domain.model.recipedetailmodel.RecipeDetailModel
+import com.berkaykurtoglu.recipequest.domain.model.recipesearchmodel.RecipeSearchModel
 import com.berkaykurtoglu.recipequest.domain.model.recipesmodel.RecipeModel
 import java.util.Date
 
@@ -37,5 +38,11 @@ data class RecipeDetailEntity(
 
     fun toRecipeModel() : RecipeModel =
         RecipeModel(sourceName, title, readyInMinutes, image, id)
+
+    fun toRecipeSearchModel() : RecipeSearchModel =
+        RecipeSearchModel(
+            id = id,
+            title = title
+        )
 
 }
