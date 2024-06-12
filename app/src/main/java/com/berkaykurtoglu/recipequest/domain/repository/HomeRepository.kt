@@ -12,10 +12,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
 
-    suspend fun getAllRecipesFromNetwork(
-        offset : Int,
-        number : Int
-    ) : Flow<ApiResult<RecipeResponseDto>>
 
     suspend fun getAllRecipesFromCache() : Flow<PagingData<RecipeModel>>
 

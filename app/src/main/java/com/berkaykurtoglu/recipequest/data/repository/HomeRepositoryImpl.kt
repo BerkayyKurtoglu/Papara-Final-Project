@@ -25,12 +25,6 @@ class HomeRepositoryImpl @Inject constructor (
     private val cacheDataSource: CacheDao
 ) : HomeRepository {
 
-
-    override suspend fun getAllRecipesFromNetwork(
-        offset : Int,
-        number : Int
-    ) : Flow<ApiResult<RecipeResponseDto>> = remoteDataSource.getRecipesRandomly(offset, number)
-
     override suspend fun getAllRecipesFromCache(): Flow<PagingData<RecipeModel>> =
         Pager(
             config = PagingConfig(pageSize = 10, prefetchDistance = 2),
