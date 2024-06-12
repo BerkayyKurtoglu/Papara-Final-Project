@@ -29,7 +29,7 @@ fun FilterChips(
             FilterChip(
                 selected = it == selectedItem,
                 onClick = {
-                    onFilterSelected(it)
+                    if (it != selectedItem) onFilterSelected(it)
                 },
                 label = {
                     Text(text = it.category)
