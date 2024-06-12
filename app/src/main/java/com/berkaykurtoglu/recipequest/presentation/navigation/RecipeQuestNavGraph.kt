@@ -20,7 +20,6 @@ import kotlinx.coroutines.CoroutineScope
 @Composable
 fun RecipeQuestNavGraph(
     modifier: Modifier = Modifier,
-    isNetworkAvailable: Boolean,
     navController: NavHostController = rememberNavController(),
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     startDestination: String = Screens.HomeScreen.route,
@@ -43,7 +42,6 @@ fun RecipeQuestNavGraph(
         ){
             HomeScreen(
                 coroutineScope = coroutineScope,
-                isNetworkAvailable = isNetworkAvailable,
                 onNavigateToDetail = {id,comingScreenId->
                     navAction.navigateToRecipeDetail(id,comingScreenId)
                 },
@@ -71,7 +69,6 @@ fun RecipeQuestNavGraph(
             val comingId = it.arguments?.getInt(ScreenArguments.DetailScreenComingId.argument)
             RecipeDetailScreen(
                 coroutineScope = coroutineScope,
-                isNetworkAvailable = isNetworkAvailable,
                 recipeId = recipeId,
                 comingScreenId = comingId
             ){
