@@ -13,7 +13,7 @@ class RecipesPagingSource(
     private val remoteDataSource: RemoteDataSource
 ) : PagingSource<Int, RecipeModel>() {
 
-    private val PAGE_SIZE = 2
+    private val PAGE_SIZE = 10
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, RecipeModel> {
 

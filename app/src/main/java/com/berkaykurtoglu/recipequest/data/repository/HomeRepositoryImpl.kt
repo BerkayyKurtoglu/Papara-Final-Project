@@ -39,7 +39,7 @@ class HomeRepositoryImpl @Inject constructor (
         type : String
     ): Flow<PagingData<RecipeModel>> =
         Pager(
-            config = PagingConfig(pageSize = 5, prefetchDistance = 0),
+            config = PagingConfig(pageSize = 10, prefetchDistance = 1),
             pagingSourceFactory = { RecipesPagingSource(type,remoteDataSource) }
         ).flow
 
