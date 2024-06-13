@@ -5,7 +5,7 @@
 |----------|---------|---------
 |![MainScreen](https://github.com/BerkayyKurtoglu/Papara-Final-Project/assets/88981781/fe9bdd08-3833-4a68-9952-df09bf1c6498) | ![SearchScreen](https://github.com/BerkayyKurtoglu/Papara-Final-Project/assets/88981781/4c320f63-794f-4504-83be-7cc77aab0667) | ![Notification](https://github.com/BerkayyKurtoglu/Papara-Final-Project/assets/88981781/2fc5a51b-e158-46e3-a392-60c794e4535b) |
 
-| DetailScreen1 | Your Tasks | Friend's Tasks 
+| DetailScreen1 | DetailScreen2 | FavoritesScreen
 |----------|---------|---------|
 | ![DetailScreen1](https://github.com/BerkayyKurtoglu/Papara-Final-Project/assets/88981781/3446011b-feb2-4365-aceb-d19cbd2de0af) | ![DetailScreen2](https://github.com/BerkayyKurtoglu/Papara-Final-Project/assets/88981781/034b3928-47ea-48d7-9b21-d73dd1cbf236)| ![FavoritesScreen](https://github.com/BerkayyKurtoglu/Papara-Final-Project/assets/88981781/a99f8416-621a-457e-87a9-d22c17283dd9) |
 
